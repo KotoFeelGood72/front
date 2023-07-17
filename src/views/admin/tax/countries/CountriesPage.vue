@@ -1,5 +1,10 @@
 <template>
-  <v-table/>
+  <section>
+    <div class="container">
+      
+      <v-table/>
+    </div>
+  </section>
 </template>
 
 <script>

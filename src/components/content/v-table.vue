@@ -18,7 +18,6 @@
         </tr>
       </thead>
       <tbody>
-        {{ getCountries }}
         <tr v-for="item in getCountries.list" :key="item.id">
           <th>
             <p>{{ item.isoCode }}</p>
@@ -30,16 +29,16 @@
         </tr>
       </tbody>
     </table>
-    <!-- <div class="table-bottom">
+    <div class="table-bottom">
       <div class="table-navigation">
-        <div class="previousPage" @click="previousPage" :disabled="page === 1">
+        <div class="previousPage" @click="previousPage" :disabled="currentPage === 1">
           <global-icon icon="tabler:chevron-left"/>
         </div>
-        <div class="nextPage" @click="nextPage" :disabled="page === totalPages">
+        <div class="nextPage" @click="nextPage" :disabled="currentPage === totalPages">
           <global-icon icon="tabler:chevron-right"/>
         </div>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -52,13 +51,29 @@ export default {
     VSortItem
   },
   computed: {
-    ...mapGetters(['getCountries']),
+    ...mapGetters(['getCountries', 'getCurrentPage', 'getTotalPages']),
+    currentPage() {
+      return this.getCurrentPage;
+    },
+    totalPages() {
+      return this.getTotalPages;
+    },
   },
   mounted() {
-    this.actionCountries(1)
+    this.actionCountries(1);
   },
   methods: {
     ...mapActions(['actionCountries']),
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.actionCountries(this.currentPage - 1);
+      }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.actionCountries(this.currentPage + 1);
+      }
+    },
   },
 };
 </script>
