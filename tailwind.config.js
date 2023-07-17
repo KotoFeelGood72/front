@@ -12,10 +12,21 @@ module.exports = {
         '2xl': '6rem',
       },
     },
+    fontSize: {
+      sm: '12px',
+        '14sm': '14px',
+        '16sm': '16px',
+        '18sm': '18px',
+      xl: '20px',
+      '24xl': '24px',
+      '26xl': '26px'
+    },
+    borderRadius: {
+      default: '10px',
+    },
     extend: {
       colors: {
-        'primary': '#556ee6',
-        'light': 'rgba(85,110,230,.25)'
+        grey: '#9CA3AF', 
       },
       userSelect: {
         'none': 'none',

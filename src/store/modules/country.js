@@ -1,4 +1,4 @@
-import api from '@/api/api.js'
+import axios from 'axios'
 
 
 
@@ -10,11 +10,15 @@ export default {
   },
 
   actions: {
-    async actionCountries({commit}) {
-      const response = await api.post(`admin/countries/page/1`)
-      commit('setCountries', response.data)
-      console.log(response.data)
+    async actionCountries({commit}, page) {
+      try {
+        const response = await axios.get(`admin/countries/page/${page}`);
+        commit('setCountries', response.data);
+      } catch (error) {
+        console.error(error);
+      }
     }
+    
   },
 
   mutations: {

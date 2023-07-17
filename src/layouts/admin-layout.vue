@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex">
       <v-sidebar />
       <slot></slot>
   </div>

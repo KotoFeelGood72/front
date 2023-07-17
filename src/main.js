@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router';
 import './assets/css/main.css'
 import store from '@/store'
+import axios from 'axios'
 
 
 
@@ -12,7 +13,7 @@ Vue.component('GlobalIcon', GlobalIcon)
 
 
 
-// axios.defaults.baseURL = process.env.BASE_URL
+axios.defaults.baseURL = process.env.VUE_APP_API_URL + '/api'
 
 
 

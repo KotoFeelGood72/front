@@ -2,52 +2,71 @@ export default {
   menu: [
     {
       name: 'Местоположение',
-      link: '/geo',
       icon: 'tabler:map-pin',
-      id: 'menu-0',
+      isActive: false,
       submenu: [
-        { name: 'Страна', link: '/country', id: 'submenu-0'},
-        { name: 'Регион', link: '/region', id: 'submenu-1'},
-        { name: 'Город', link: '/city', id: 'submenu-2'},
+        { name: 'Страна', link: '/admin/countries/'},
+        { name: 'Регион', link: '/region'},
+        { name: 'Город', link: '/city'},
       ]
     },
     {
       name: 'Пользователи',
-      link: '/geo',
       icon: 'tabler:user-cog',
-      id: 'menu-1',
+      isActive: false,
       submenu: [
-        { name: 'Пользователи', link: '/users', id: 'submenu-3'},
-        { name: 'Роли и права', link: '/role', id: 'submenu-4'},
+        { name: 'Все', link: '/users'},
+        { name: 'Менеджеры', link: '/users'},
+        { name: 'Администраторы', link: '/users'},
+        { name: 'Заведующие', link: '/users'},
       ]
+    },
+    {
+      name: 'Роли и права',
+      link: '/role',
+      icon: 'tabler:pencil-minus',
+      isActive: false,
     },
     {
       name: 'Детские сады',
       link: '/geo',
       icon: 'tabler:mood-boy',
-      id: 'menu-2',
+      isActive: false,
     },
     {
       name: 'Каталог услуг',
-      link: '/geo',
+      link: '/services',
       icon: 'tabler:category',
-      id: 'menu-3',
+      isActive: false,
     },
     {
       name: 'Группа цен',
       link: '/geo',
       icon: 'tabler:cash-banknote',
-      id: 'menu-4',
+      isActive: false,
     },
     {
       name: 'Фотосессии',
-      link: '/geo',
       icon: 'tabler:user-cog',
-      id: 'menu-5',
+      isActive: false,
       submenu: [
-        { name: 'Список фотосессий', link: '', id: 'submenu-5'},
-        { name: 'Состояние фотосессий', link: '', id: 'submenu-6'},
+        { name: 'Список фотосессий', link: '/'},
+        { name: 'Состояние фотосессий', link: '/'},
       ]
+    },
+  ],
+  other: [
+    {
+      name: 'Дополнительно',
+      link: '',
+      icon: 'tabler:camera',
+      isActive: false,
+    },
+    {
+      name: 'Дополнительно',
+      link: '',
+      icon: 'tabler:camera',
+      isActive: false,
     },
   ]
 }

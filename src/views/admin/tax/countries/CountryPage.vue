@@ -12,25 +12,26 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 export default {
   data() {
     return {
-      countries: [],
+      // countries: [],
     };
   },
-  mounted() {
-    this.fetchData();
-  },
-  methods: {
-    async fetchData() {
-      try {
-        const response = await axios.get("http://192.168.0.100:8000/admin/countries/page/6");
-        this.countries = response.data.list;
-      } catch (error) {
-        console.error(error);
-      }
-    },
-  },
+  // mounted() {
+  //   this.fetchData();
+  //   console.log(process.env.BASE_URL, 'good', this.$route.fullPath)
+  // },
+  // methods: {
+  //   async fetchData() {
+  //     try {
+  //       const response = await axios.get("/admin/countries/page/2");
+  //       this.countries = response.data.list;
+  //     } catch (error) {
+  //       console.error(error);
+  //     }
+  //   },
+  // },
 };
 </script>

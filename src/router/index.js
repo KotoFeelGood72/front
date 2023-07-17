@@ -7,6 +7,7 @@ import VueRouter from "vue-router";
 
 import Countries from '@/views/admin/tax/countries/CountriesPage.vue'
 import Country from '@/views/admin/tax/countries/CountryPage.vue'
+import VDashboard from "@/views/admin/pages/v-dashboard.vue";
 
 // End import Pages //
 
@@ -19,11 +20,18 @@ const routes = [
     component: Countries,
     meta: {
       layout: 'admin-layout',
-    }
+    },
   },
   {
     path: '/admin/countries/page/:id', 
     component: Country,
+    meta: {
+      layout: 'admin-layout',
+    }
+  },
+  {
+    path: '/',
+    component: VDashboard,
     meta: {
       layout: 'admin-layout',
     }

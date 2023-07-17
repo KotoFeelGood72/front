@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-logo/>
+  <div class=" bg-indigo-950 py-[10px] px-[20px] text-white max-w-[280px] w-full h-[100vh]">
+    <v-logo class="mb-[10px]"/>
     <v-nav/>
   </div>
 </template>

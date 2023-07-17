@@ -4,34 +4,21 @@
       <thead>
         <tr>
           <th>
-            <p>Код страны</p>
-            <div class="sort-btn">
-              <global-icon icon="tabler:arrows-down-up"/>
-            </div>
+            <v-sort-item name="Код страны"/>
           </th>
           <th>
-            <p>Название страны</p>
-            <div class="sort-btn">
-              <global-icon icon="tabler:arrows-down-up"/>
-            </div>
+            <v-sort-item name="Название страны"/>
           </th>
           <th>
-            <p>Видимость</p>
-            <div class="sort_btn--group">
-              <div class="sort-btn">
-                <global-icon icon="tabler:arrows-down-up"/>
-              </div>
-              <div class="sort-btn">
-                <global-icon icon="tabler:filter"/>
-              </div>
-            </div>
+            <v-sort-item name="Видимость"/>
           </th>
           <th>
-            <global-icon icon="tabler:dots-vertical"/>
+            <v-sort-item name="Код страны"/>
           </th>
         </tr>
       </thead>
       <tbody>
+        {{ getCountries }}
         <tr v-for="item in getCountries.list" :key="item.id">
           <th>
             <p>{{ item.isoCode }}</p>
@@ -43,47 +30,35 @@
         </tr>
       </tbody>
     </table>
-    <div class="table-bottom">
-      <!-- <div class="table-navigation">
+    <!-- <div class="table-bottom">
+      <div class="table-navigation">
         <div class="previousPage" @click="previousPage" :disabled="page === 1">
           <global-icon icon="tabler:chevron-left"/>
         </div>
         <div class="nextPage" @click="nextPage" :disabled="page === totalPages">
           <global-icon icon="tabler:chevron-right"/>
         </div>
-      </div> -->
-    </div>
+      </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import VSortItem from './v-sort-item.vue';
 
 export default {
+  components: {
+    VSortItem
+  },
   computed: {
     ...mapGetters(['getCountries']),
   },
-  methods: {
-    ...mapActions(['actionCountries'])
-    
-  },
   mounted() {
-    this.actionCountries()
-  }
-  // computed: {
-  //   ...mapState(['page', 'totalPages']),
-  // },
-  // methods: {
-  //   ...mapActions(['fetchCountry']),
-  //   previousPage() {
-  //     this.fetchCountry(this.page - 1);
-  //   },
-  //   nextPage() {
-  //     this.fetchCountry(this.page + 1);
-  //   },
-  // },
-  // mounted() {
-  //   this.fetchCountry(3);
-  // },
+    this.actionCountries(1)
+  },
+  methods: {
+    ...mapActions(['actionCountries']),
+  },
 };
 </script>
