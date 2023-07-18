@@ -1,8 +1,8 @@
 <template>
   <div>
-    <table>
-      <thead>
-        <tr>
+    <table class="w-full">
+      <thead class="w-full">
+        <tr class="w-full">
           <th>
             <v-sort-item name="Код страны"/>
           </th>
@@ -12,33 +12,28 @@
           <th>
             <v-sort-item name="Видимость"/>
           </th>
-          <th>
-            <v-sort-item name="Код страны"/>
-          </th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="item in getCountries.list" :key="item.id">
           <th>
-            <p>{{ item.isoCode }}</p>
-            <p>{{ item.name }}</p>
-            <p>{{ item.active }}</p>
-            <p>{{ item.date_create }}</p>
-            <p>{{ item.date_update }}</p>
+            <div class="flex justify-start">
+              <p>{{ item.isoCode }}</p>
+            </div>
+          </th>
+          <th>
+            <div class="flex justify-start">
+              <p>{{ item.name }}</p>
+            </div>
+          </th>
+          <th>
+            <div class="flex justify-start">
+              <p>{{ item.active }}</p>
+            </div>
           </th>
         </tr>
       </tbody>
     </table>
-    <div class="table-bottom">
-      <div class="table-navigation">
-        <div class="previousPage" @click="previousPage" :disabled="currentPage === 1">
-          <global-icon icon="tabler:chevron-left"/>
-        </div>
-        <div class="nextPage" @click="nextPage" :disabled="currentPage === totalPages">
-          <global-icon icon="tabler:chevron-right"/>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 

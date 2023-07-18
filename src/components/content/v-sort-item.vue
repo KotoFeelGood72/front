@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="flex items-center justify-start">
     <p>{{ name }}</p>
     <div class="sort-btn">
       <global-icon icon="tabler:arrows-down-up"/>

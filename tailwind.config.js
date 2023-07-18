@@ -11,6 +11,13 @@ module.exports = {
         xl: '5rem',
         '2xl': '6rem',
       },
+      screens: {
+        sm: '600px',
+        md: '728px',
+        lg: '984px',
+        xl: '1240px',
+        '2xl': '1400px',
+      },
     },
     fontSize: {
       sm: '12px',
