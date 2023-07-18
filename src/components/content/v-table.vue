@@ -15,19 +15,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in getCountries.list" :key="item.id">
+        <tr v-for="item in getCountries.list" :key="item.id" class="py-[11px]">
           <th>
-            <div class="flex justify-start">
+            <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
               <p>{{ item.isoCode }}</p>
             </div>
           </th>
           <th>
-            <div class="flex justify-start">
+            <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
               <p>{{ item.name }}</p>
             </div>
           </th>
           <th>
-            <div class="flex justify-start">
+            <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
+              
               <p>{{ item.active }}</p>
             </div>
           </th>

@@ -34,6 +34,9 @@ module.exports = {
     extend: {
       colors: {
         grey: '#9CA3AF', 
+        'grey-700': '#374151', 
+        'grey-200': '#E5E7EB',
+        'grey-500': '#6B7280'
       },
       userSelect: {
         'none': 'none',

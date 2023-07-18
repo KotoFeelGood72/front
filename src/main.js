@@ -13,7 +13,8 @@ Vue.component('GlobalIcon', GlobalIcon)
 
 
 
-axios.defaults.baseURL = process.env.VUE_APP_API_URL + '/api'
+// axios.defaults.baseURL = process.env.VUE_APP_API_URL + '/api'
+axios.defaults.baseURL = '/api'
 
 
 
