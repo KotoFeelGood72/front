@@ -27,4 +27,4 @@ jobs:
           REMOTE_HOST: ${{ secrets.SERVER_HOST }}
           REMOTE_USER: ${{ secrets.SERVER_USER_NAME }}
           source: "/dist"
-          target: "/var/www/html/front/"
+          target: "/www/html/view"

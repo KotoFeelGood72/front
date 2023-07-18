@@ -1,14 +1,15 @@
 <template>
   <section class="w-full">
     <div class="container">
+      <v-title title="Страна" class="mb-[40px]"/>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px]">
         <div class="module-head flex justify-between mb-[29px]">
           <v-search/>
           <div class="module-group flex justify-end">
-            <v-add-button/>
-            <v-delete-button/>
+            <v-add-button class="mr-[20px]"/>
+            <v-delete-button class="mr-[20px]"/>
             <div class="settings-btn">
-              <button type="button">
+              <button type="button" class="flex items-center justify-center w-[40px] h-[40px] rounded-[8px] bg-indigo-600 text-white">
                 <global-icon icon="tabler:settings" width="20"/>
               </button>
             </div>
@@ -48,12 +49,14 @@
   import VSearch from '@/components/shared/v-search.vue';
   import vAddButton from '@/components/button/v-add-button.vue';
   import vDeleteButton from '@/components/button/v-delete-button.vue';
+  import vTitle from '@/components/content/v-title.vue';
   export default {
     components: {
       vTable,
       VSearch,
       vAddButton,
-      vDeleteButton
+      vDeleteButton,
+      vTitle
     }
   }
 </script>
