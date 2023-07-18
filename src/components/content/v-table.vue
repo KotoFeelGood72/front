@@ -28,7 +28,7 @@
           </th>
           <th>
             <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
-              
+
               <p>{{ item.active }}</p>
             </div>
           </th>
@@ -41,6 +41,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import VSortItem from './v-sort-item.vue';
+import vActive from '@/components/la'
 
 export default {
   components: {

@@ -8,15 +8,15 @@ module.exports = {
         DEFAULT: '1rem',
         sm: '2rem',
         lg: '4rem',
-        xl: '5rem',
-        '2xl': '6rem',
+        xl: '2rem',
+        '2xl': '1rem',
       },
       screens: {
         sm: '600px',
         md: '728px',
         lg: '984px',
         xl: '1240px',
-        '2xl': '1400px',
+        '2xl': '1420px',
       },
     },
     fontSize: {

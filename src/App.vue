@@ -22,6 +22,8 @@ export default {
 
 <style lang="scss">
 
-
+.container {
+	margin: 0 auto;
+}
 
 </style>
