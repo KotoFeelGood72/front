@@ -16,25 +16,27 @@
           </div>
         </div>
         <v-table/>
-        <div class="module-bottom">
-          <div class="col-row-settings">
-            <div>Полей на странице</div>
-            <select>
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="40">40</option>
-              <option value="50">50</option>
-            </select>
+        <div class="module-bottom flex items-center justify-end py-[9.5px]">
+          <div class="col-row-settings flex items-center">
+            <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
+            <div class="col-row-select">
+              <select class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+                <option value="40">40</option>
+                <option value="50">50</option>
+              </select>
+            </div>
           </div>
-          <div class="total-el">
+          <div class="total-el text-grey-500 text-14sm mr-[25px]">
             1-10 из 50
           </div>
           <div class="navigation-module">
-            <button type="button">
+            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400">
               <global-icon icon="tabler:chevron-left" width="20"/>
             </button>
-            <button type="button">
+            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400">
               <global-icon icon="tabler:chevron-right" width="20"/>
             </button>
           </div>
@@ -63,4 +65,36 @@
 
 <style lang="scss" scoped>
 
+
+.navigation-module {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  grid-gap: 4px;
+  width: 92px;
+}
+
+.col-row-select {
+  position: relative;
+  
+  width: 63px;
+  select {
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+  }
+  &:before {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  &:focus {
+    outline: none;
+  }
+}
 </style>
