@@ -33,6 +33,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        light: '#FAFBFF',
         grey: '#9CA3AF', 
         'grey-700': '#374151', 
         'grey-500': '#6B7280',

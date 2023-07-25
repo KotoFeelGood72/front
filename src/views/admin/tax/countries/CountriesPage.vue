@@ -19,14 +19,8 @@
         <div class="module-bottom flex items-center justify-end py-[9.5px]">
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
-            <div class="col-row-select">
-              <select class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select">
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-                <option value="40">40</option>
-                <option value="50">50</option>
-              </select>
+            <div class="col-row-select mr-[25px]">
+              <v-select :data="select"/>
             </div>
           </div>
           <div class="total-el text-grey-500 text-14sm mr-[25px]">
@@ -43,6 +37,7 @@
         </div>
       </div>
     </div>
+    <v-filter />
   </section>
 </template>
 
@@ -52,13 +47,22 @@
   import vAddButton from '@/components/button/v-add-button.vue';
   import vDeleteButton from '@/components/button/v-delete-button.vue';
   import vTitle from '@/components/content/v-title.vue';
+  import vSelect from '@/components/shared/v-select.vue';
+  import vFilter from '@/components/filter/v-filter.vue'
   export default {
     components: {
       vTable,
       VSearch,
       vAddButton,
       vDeleteButton,
-      vTitle
+      vTitle,
+      vSelect,
+      vFilter
+    },
+    data() {
+      return {
+        select: [10, 20, 30, 40, 50]
+      }
     }
   }
 </script>
@@ -77,24 +81,5 @@
   position: relative;
   
   width: 63px;
-  select {
-    appearance: none;
-    -moz-appearance: none;
-    -webkit-appearance: none;
-    width: 100%;
-  }
-  &:before {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &:focus {
-    outline: none;
-  }
 }
 </style>

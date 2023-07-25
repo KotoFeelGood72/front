@@ -1,7 +1,16 @@
 <template>
   <div class="input-search bg-[#FAFBFF]">
-    <input type="search" placeholder="Поиск" class="border border-grey-300 rounded-[8px]" @focus="isFocusec" @blur="handleBlur"  :class="{'border-indigo-600': isFocus}">
-    <button type="submit" :class="{'text-indigo-600': isFocus}"><global-icon icon="tabler:search" width="18"/></button>
+    <input type="search" 
+    placeholder="Поиск"
+     class="border border-grey-300 rounded-[8px]" 
+     @focus="isFocusec" 
+     @blur="handleBlur"  
+     :class="{'border-indigo-600': isFocus}" 
+     @input="searchQuerys" 
+     v-model.trim="searchQuery">
+    <button type="button" :class="{'text-indigo-600': isFocus}" @click="clearSearch">
+      <global-icon :icon="changeIcon" width="18"/>
+    </button>
   </div>
 </template>
 
@@ -9,7 +18,17 @@
   export default {
     data() {
       return {
-        isFocus: false
+        isFocus: false,
+        searchQuery: ''
+      }
+    },
+    computed: {
+      changeIcon() {
+        if(this.searchQuery.length) {
+          return 'tabler:x'
+        } else {
+          return 'tabler:search'
+        }
       }
     },
     methods: {
@@ -18,8 +37,19 @@
       },
       handleBlur() {
         this.isFocus = false
-      }
-    }
+      },
+      clearSearch() {
+        this.$store.dispatch('clearSearchQuery');
+        this.searchQuery = ''
+      },
+      searchQuerys() {
+        if (this.searchQuery.length > 0) {
+          this.$store.dispatch('updateSearchQuery', this.searchQuery);
+        } else {
+          this.$store.dispatch('clearSearchQuery');
+        }
+      },
+    },
   }
 </script>
 
@@ -30,6 +60,12 @@
   position: relative;
   border-radius: 8px;
   overflow: hidden;
+}
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  display: none;
 }
 
 
