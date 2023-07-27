@@ -1,12 +1,12 @@
 <template>
-  <div class="filter">
-    <div class="filter-main shadow-sm">
-      <div class="close-filter">
+  <div class="filter" v-if="isPopupOpen">
+    <div class="filter-main shadow-2xl">
+      <div class="close-filter" @click="togglePopup">
         <global-icon icon="tabler:x" width="25" height="25" color="#6B7280" class="absolute top-[36px] right-[36px] cursor-pointer"/>
       </div>
       <v-title title="Фильтр" level="h3" class="text-xl font-medium mb-[6px]"/>
-      <p class="text-grey-500 text-14sm border-b border-grey-200 pb-[20px]">Измените видимость объектов</p>
-      <div class="filter-row pb-[20px] border-b border-grey-300">
+      <p class="text-grey-500 text-14sm border-b border-grey-200 pb-[20px] mb-[20px]">Измените видимость объектов</p>
+      <div class="filter-row pb-[20px] border-b border-grey-300 mb-[20px]">
         <div class="filter-acc flex items-center justify-between relative cursor-pointer mb-[15px]">
           <p class="uppercase text-grey-400">поля</p>
           <global-icon icon="tabler:chevron-down" width="20" height="24" color="#9CA3AF" class="arrow-acc"/>
@@ -66,7 +66,17 @@
           ]
         }
       }
-    }
+    },
+    methods: {
+      togglePopup() {
+        this.$store.commit('togglePopup')
+      }
+    },
+    computed: {
+      isPopupOpen() {
+        return this.$store.getters.getPopupStatus
+      }
+    },
   }
 </script>
 

@@ -8,7 +8,7 @@
           <div class="module-group flex justify-end">
             <v-add-button class="mr-[20px]"/>
             <v-delete-button class="mr-[20px]"/>
-            <div class="settings-btn">
+            <div class="settings-btn" @click="togglePopup">
               <button type="button" class="flex items-center justify-center w-[40px] h-[40px] rounded-[8px] bg-indigo-600 text-white">
                 <global-icon icon="tabler:settings" width="20"/>
               </button>
@@ -49,6 +49,7 @@
   import vTitle from '@/components/content/v-title.vue';
   import vSelect from '@/components/shared/v-select.vue';
   import vFilter from '@/components/filter/v-filter.vue'
+
   export default {
     components: {
       vTable,
@@ -61,8 +62,13 @@
     },
     data() {
       return {
-        select: [10, 20, 30, 40, 50]
+        select: [10, 20, 30, 40, 50],
       }
+    },
+    methods: {
+      togglePopup() {
+        this.$store.commit('togglePopup')
+      },
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
-    <select class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select">
-      <option v-for="item in data" :value="item" :key="item + '-' + i">{{ item }}</option>
+    <select class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select" @change="selectOption">
+      <option v-for="(item, i) in data" :value="item" :key="item + '-' + i">{{ item }}</option>
     </select>
     <global-icon icon="eva:arrow-down-fill" width="17" height="20" color="#9CA3AF" class="select-arrow"/>
   </div>
@@ -9,7 +9,15 @@
 
 <script>
   export default {
-    props: ['data']
+    props: ['data'],
+    methods: {
+      selectOption(e) {
+        const currentPage = this.$store.getters.getCurrentPage;
+        const limitNumber = Number(e.target.value);
+        this.$store.commit('setLimitCountry', limitNumber);
+        this.$store.dispatch('actionCountries', currentPage );
+      }
+    }
   }
 </script>
 

@@ -3,23 +3,20 @@
     <table class="w-full">
       <thead class="w-full">
         <tr class="w-full">
-          <th>
-            <v-sort-item name="Код страны"/>
-          </th>
-          <th>
-            <v-sort-item name="Название страны"/>
-          </th>
-          <th>
-            <v-sort-item name="Видимость"/>
+          <th v-for="(item, i) in sortList.sortList" :key="'sort-item' + i">
+            <v-sort-item 
+              :name=item.name
+              :field=item.code
+            />
           </th>
         </tr>
       </thead>
       <tbody>
         <template>
-            <tr v-for="item in resultTable" :key="item.id" class="py-[11px] border-b border-grey-200">
+            <tr v-for="item in getCountries.list" :key="item.id" class="py-[11px] border-b border-grey-200">
               <th>
                 <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
-                  <p>{{ item.isoCode }}</p>
+                  <p>{{ item.code }}</p>
                 </div>
               </th>
               <th>
@@ -29,7 +26,7 @@
               </th>
               <th>
                 <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
-                  <v-status :status="item.active" @changeStatus="submitCountry(item)" />
+                  <v-status v-if="item" :status="item.active" @changeStatus="submitCountry(item)" />
                 </div>
               </th>
             </tr>
@@ -44,6 +41,7 @@
 import { mapGetters, mapActions } from 'vuex';
 import VStatus from '@/components/label/v-status.vue';
 import vSortItem from './v-sort-item.vue';
+import sortList from '@/data/sort.js'
 import axios from 'axios';
 
 export default {
@@ -51,20 +49,18 @@ export default {
     VStatus,
     vSortItem
   },
+  data() {
+    return {
+      sortList,
+    }
+  },
   computed: {
-    ...mapGetters(['getCountries', 'getCurrentPage', 'getTotalPages', 'getSearchQuery']),
+    ...mapGetters(['getCountries', 'getCurrentPage', 'getTotalPages']),
     currentPage() {
       return this.getCurrentPage;
     },
     totalPages() {
       return this.getTotalPages;
-    },
-    resultTable() {
-      if(this.getSearchQuery) {
-        return this.getSearchQuery.data.list
-      } else {
-        return this.getCountries.list
-      }
     },
   },
   mounted() {
@@ -73,16 +69,15 @@ export default {
   methods: {
     async submitCountry(item) {
       try {
-        // Отправляем запрос на сервер для обновления статуса
         await axios.post('admin/countries/edit', {
           id: item.id,
           active: item.active === 1 ? 0 : 1,
-          code: item.isoCode,
+          code: item.code,
           name: item.name,
         });
-        
-        // Если запрос успешен, обновляем статус в списке стран
-        item.active = item.active === 1 ? 0 : 1;
+        if(item.active) {
+          item.active = item.active === 1 ? 0 : 1;
+        }
       } catch (error) {
         console.error(error);
       }
