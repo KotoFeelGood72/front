@@ -87,7 +87,6 @@ export default {
 
 
     sortOrder(field, order) {
-      // Здесь мы вызываем экшен сортировки из Vuex и передаем в него поля для сортировки
       this.actionCountries(1, field, order);
     },
 
