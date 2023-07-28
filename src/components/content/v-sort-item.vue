@@ -1,35 +1,40 @@
 <template>
   <div class="flex items-center justify-start py-[11px] border-b border-grey-200 cursor-pointer" @click="toggleSortOrder">
-    <p class="mr-[10px] text-grey-700 font-medium">{{ name }}</p>
+    <p class="mr-[10px] text-grey-700 font-medium">{{ data.name }}</p>
     <div class="sort-btn text-grey">
-      <global-icon :icon="getSortIcon()" width="15" />
+      <global-icon icon="tabler:arrows-down-up" width="15" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    name: String,
-    field: String,
-    sortField: String,
-    sortOrder: String,
-  },
+  props: ['data'],
+  // data() {
+  //   return {
+  //     field: ''
+  //   }
+  // },
   methods: {
     toggleSortOrder() {
       if (this.sortField === this.field) {
-        this.$emit('toggleSortOrder', this.field);
+        // Если текущее поле сортировки совпадает с полем данного элемента,
+        // меняем направление сортировки на противоположное
+        this.sortOrder = this.sortOrder === 'ASC' ? 'DESC' : 'ASC';
+        this.sortField = 'code';
+        this.$store.commit('setSortOrder', this.sortOrder)
+        this.$store.commit('setSortField', this.sortField)
+        console.log(this.sortOrder, this.sortField)
       } else {
-        this.$emit('setSortField', this.field);
+        // Если текущее поле сортировки отличается, устанавливаем поле данного элемента
+        // в качестве текущего поля сортировки и направление сортировки по умолчанию (asc)
+        this.sortField = this.field;
+        // this.sortField = 'code';
+        this.sortOrder = 'ASC';
       }
-    },
-    getSortIcon() {
-      // Возвращаем правильную иконку в зависимости от текущего состояния сортировки
-      if (this.sortField === this.field) {
-        return this.sortOrder === 'asc' ? 'tabler:arrow-up' : 'tabler:arrow-down';
-      }
-      // Если текущее поле не совпадает с полем сортировки, показываем неактивную иконку
-      return 'tabler:arrows-down-up';
+      // Здесь генерируем событие и передаем информацию о текущем поле сортировки и направлении
+      // сортировки в родительский компонент CountriesList
+      this.$emit('toggleSortOrder', this.sortField, this.sortOrder);
     },
   },
 };

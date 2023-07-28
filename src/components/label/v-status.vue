@@ -1,6 +1,6 @@
 <template>
   <div @click="toggleStatus" class="none-click">
-    <div v-if="status === 1" class="bg-emerald-100 py-[3px] px-[20px] rounded-[6px] text-emerald-800 text-[12px] max-w-[92px] flex items-center justify-center cursor-pointer">
+    <div v-if="status == 1" class="bg-emerald-100 py-[3px] px-[20px] rounded-[6px] text-emerald-800 text-[12px] max-w-[92px] flex items-center justify-center cursor-pointer">
       Активно
     </div>
     <div v-else class="bg-pink-200 py-[3px] px-[20px] rounded-[6px] text-pink-800 text-[12px] max-w-[92px] flex items-center justify-center cursor-pointer">

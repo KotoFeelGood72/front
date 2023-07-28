@@ -4,9 +4,9 @@
       <thead class="w-full">
         <tr class="w-full">
           <th v-for="(item, i) in sortList.sortList" :key="'sort-item' + i">
-            <v-sort-item 
-              :name=item.name
-              :field=item.code
+            <v-sort-item
+              :data=item
+              @toggleSortOrder="sortOrder"
             />
           </th>
         </tr>
@@ -26,7 +26,7 @@
               </th>
               <th>
                 <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal">
-                  <v-status v-if="item" :status="item.active" @changeStatus="submitCountry(item)" />
+                  <v-status v-if="item" :status="item.active ? item.active : 0" @changeStatus="submitCountry(item)" />
                 </div>
               </th>
             </tr>
@@ -55,7 +55,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getCountries', 'getCurrentPage', 'getTotalPages']),
+    ...mapGetters(['getCountries', 'getCurrentPage']),
     currentPage() {
       return this.getCurrentPage;
     },
@@ -83,6 +83,14 @@ export default {
       }
     },
     ...mapActions(['actionCountries']),
+
+
+
+    sortOrder(field, order) {
+      // Здесь мы вызываем экшен сортировки из Vuex и передаем в него поля для сортировки
+      this.actionCountries(1, field, order);
+    },
+
     previousPage() {
       if (this.currentPage > 1) {
         this.actionCountries(this.currentPage - 1);

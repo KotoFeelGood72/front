@@ -5,20 +5,21 @@ export default {
     countries: [],
     currentPage: 1,
     totalPages: 0,
+    sortField: '', // Поле, по которому происходит сортировка
+    sortOrder: 'ASC',
     filters: {
       limit: 10,
       code: '',
       active: 1,
       searchQuery: ''
     },
-    sortField: '',
-    sortOrder: 'ASC',
   },
   actions: {
     async actionCountries({ commit, state }, page) {
       try {
         const params = {
           order: state.sortOrder,
+          orderby: state.sortField,
           limit: state.filters.limit,
           ...(state.filters.code && { code: state.filters.code }),
           ...(state.filters.searchQuery && { search: state.filters.searchQuery }),
@@ -26,13 +27,13 @@ export default {
         };
         const response = await axios.get(`admin/countries/page/${page}`, {params})
 
-        const { data, totalPages } = response.data;
-
-        console.log(data)
+        const {data} = response.data;
+        
         commit('setCountries', data);
         commit('setCurrentPage', page);
-        commit('setTotalPages', totalPages);
-        // commit('setLimitCountry', data.limit);
+        commit('setTotalPages', data.total);
+        commit('setSortOrder', state.sortOrder);
+        commit('setSortField', state.sortField);
       } catch (error) {
         console.error(error);
       }
@@ -45,6 +46,8 @@ export default {
   },
 
   mutations: {
+
+
     setCountries(state, countries) {
       state.countries = countries;
     },
@@ -59,9 +62,6 @@ export default {
       state.filters.limit = limit;
     },
 
-
-
-
     setSearchQuery(state, query) {
       state.filters.searchQuery = query;
     },
@@ -69,6 +69,13 @@ export default {
 
     CLEAR_SEARCH_QUERY_DATA(state) {
       state.searchQuery = ''; 
+    },
+
+    setSortField(state, field) {
+      state.sortField = field;
+    },
+    setSortOrder(state, order) {
+      state.sortOrder = order;
     },
 
   },
@@ -83,7 +90,5 @@ export default {
     getTotalPages(state) {
       return state.totalPages;
     },
-
-
   }
 }

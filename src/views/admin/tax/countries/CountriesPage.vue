@@ -24,7 +24,7 @@
             </div>
           </div>
           <div class="total-el text-grey-500 text-14sm mr-[25px]">
-            1-10 из 50
+            {{ getLengthCountries }} из {{ getTotalPages }}
           </div>
           <div class="navigation-module">
             <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400">
@@ -69,6 +69,18 @@
       togglePopup() {
         this.$store.commit('togglePopup')
       },
+    },
+    computed: {
+      getTotalPages() {
+        return this.$store.getters.getTotalPages
+      },
+      getLengthCountries() {
+        if(this.$store.getters.getCountries.list) {
+          return this.$store.getters.getCountries.list.length
+        } else {
+          return null
+        }
+      }
     }
   }
 </script>
