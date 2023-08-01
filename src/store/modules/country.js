@@ -5,8 +5,8 @@ export default {
     countries: [],
     currentPage: 1,
     totalPages: 0,
-    sortField: '', // Поле, по которому происходит сортировка
-    sortOrder: 'ASC',
+    sortField: '', 
+    sortOrder: '',
     filters: {
       limit: 10,
       code: '',
@@ -18,13 +18,16 @@ export default {
     async actionCountries({ commit, state }, page) {
       try {
         const params = {
-          order: state.sortOrder,
-          orderby: state.sortField,
           limit: state.filters.limit,
+          ...(state.sortOrder && {order: state.sortOrder}),
+          ...(state.sortField && { orderby: state.sortField }),
           ...(state.filters.code && { code: state.filters.code }),
-          ...(state.filters.searchQuery && { search: state.filters.searchQuery }),
           ...(state.active && { active: state.active }),
         };
+
+        if (state.filters.searchQuery.trim() !== '') {
+          params.search = state.filters.searchQuery;
+        }
         const response = await axios.get(`admin/countries/page/${page}`, {params})
 
         const {data} = response.data;
@@ -68,7 +71,7 @@ export default {
 
 
     CLEAR_SEARCH_QUERY_DATA(state) {
-      state.searchQuery = ''; 
+      state.filters.searchQuery = ''; 
     },
 
     setSortField(state, field) {

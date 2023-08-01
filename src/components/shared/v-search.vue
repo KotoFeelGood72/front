@@ -43,14 +43,14 @@
         this.searchQuery = ''
       },
       searchQuerys() {
-        if (this.searchQuery.length > 0) {
+        // if (this.searchQuery.length > 0) {
           // Устанавливаем searchQuery в состояние Vuex
           this.$store.commit('setSearchQuery', this.searchQuery);
           const currentPage = this.$store.getters.getCurrentPage;
           this.$store.dispatch('actionCountries', currentPage);
-        } else {
+        // } else {
           this.$store.dispatch('clearSearchQuery');
-        }
+        // }
       },
       
     },

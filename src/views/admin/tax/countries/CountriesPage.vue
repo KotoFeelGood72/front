@@ -27,10 +27,10 @@
             {{ getLengthCountries }} из {{ getTotalPages }}
           </div>
           <div class="navigation-module">
-            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400">
+            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400" @click="previousPage">
               <global-icon icon="tabler:chevron-left" width="20"/>
             </button>
-            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400">
+            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400" @click="nextPage">
               <global-icon icon="tabler:chevron-right" width="20"/>
             </button>
           </div>
@@ -49,6 +49,7 @@
   import vTitle from '@/components/content/v-title.vue';
   import vSelect from '@/components/shared/v-select.vue';
   import vFilter from '@/components/filter/v-filter.vue'
+  import { mapActions, mapGetters } from 'vuex';
 
   export default {
     components: {
@@ -66,13 +67,30 @@
       }
     },
     methods: {
+      ...mapActions(['actionCountries']),
       togglePopup() {
         this.$store.commit('togglePopup')
+      },
+
+      previousPage() {
+      if (this.currentPage > 1) {
+        this.actionCountries(this.currentPage - 1);
+        }
+      },
+      nextPage() {
+        console.log('Good')
+        if (this.currentPage < this.getTotalPages) {
+          this.actionCountries(this.currentPage + 1);
+        }
       },
     },
     computed: {
       getTotalPages() {
         return this.$store.getters.getTotalPages
+      },
+      ...mapGetters(['getCountries', 'getCurrentPage']),
+      currentPage() {
+        return this.getCurrentPage;
       },
       getLengthCountries() {
         if(this.$store.getters.getCountries.list) {
@@ -81,7 +99,7 @@
           return null
         }
       }
-    }
+    },
   }
 </script>
 

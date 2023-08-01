@@ -2,18 +2,15 @@ export default {
   sortList: [
     {
       name: 'Код страны',
-      code: 'code',
-      orderby: ''
-    },
+      orderby: 'code',
+      },
     {
       name: 'Название страны',
-      code: 'name',
-      orderby: ''
+      orderby: 'name',
     },
     {
       name: 'Видимость',
-      code: 'active',
-      orderby: ''
+      orderby: 'active',
     },
   ]
 }
