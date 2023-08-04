@@ -47,7 +47,7 @@
           // Устанавливаем searchQuery в состояние Vuex
           this.$store.commit('setSearchQuery', this.searchQuery);
           const currentPage = this.$store.getters.getCurrentPage;
-          this.$store.dispatch('actionCountries', currentPage);
+          this.$store.dispatch('actionCountries', {page: currentPage});
         // } else {
           this.$store.dispatch('clearSearchQuery');
         // }

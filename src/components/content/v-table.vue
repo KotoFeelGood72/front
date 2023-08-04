@@ -72,7 +72,7 @@ export default {
     },
   },
   mounted() {
-    this.actionCountries(1);
+    this.actionCountries({page: this.getCurrentPage});
   },
   methods: {
     async submitCountry(item) {
@@ -94,24 +94,17 @@ export default {
     ...mapActions(['actionCountries']),
 
 
-
     sortOrder(field, order) {
-      this.actionCountries(this.currentPage, field, order);
-      // this.$router.push({
-      //   path: `/admin/countries/page/${this.currentPage}`,
-      //   query: { order, orderby: field, limit: 15 }
-      // });
+      console.log(this.$route.path)
+      this.actionCountries({
+        // route: this.$route.path,
+        page: this.currentPage,
+        field,
+        order,
+      });
+      this.$router.replace({query: {order: order, orderby: field}})
     },
-
-    mounted() {
-    // Считываем параметры запроса из адресной строки
-    const { order, orderby, limit } = this.$route.query;
-
-    // Вызываем actionCountries, передавая параметры запроса
-
-    console.log(order, orderby, limit)
-    this.actionCountries(1, orderby, order, limit);
-  },
+    
   },
 };
 </script>

@@ -1,5 +1,4 @@
 import axios from 'axios';
-
 export default {
   state: {
     countries: [],
@@ -15,38 +14,37 @@ export default {
     },
   },
   actions: {
-    async actionCountries({ commit, state }, page) {
+    async actionCountries({ commit, state }, { page, field, order }) {
       try {
         const params = {
           limit: state.filters.limit,
-          ...(state.sortOrder && {order: state.sortOrder}),
-          ...(state.sortField && { orderby: state.sortField }),
+          ...(order && { orderby: field, order: order }),
           ...(state.filters.code && { code: state.filters.code }),
           ...(state.active && { active: state.active }),
         };
-
+  
         if (state.filters.searchQuery.trim() !== '') {
           params.search = state.filters.searchQuery;
         }
-        const response = await axios.get(`admin/countries/page/${page}/`, {params})
-
-
-        const {data} = response.data;
-        
+  
+        const response = await axios.get(`admin/countries/page/${page}`, { params });
+        const { data } = response.data;
+  
         commit('setCountries', data);
         commit('setCurrentPage', page);
         commit('setTotalPages', data.total);
-        commit('setSortOrder', state.sortOrder);
-        commit('setSortField', state.sortField);
+        commit('setSortOrder', order);
+        commit('setSortField', field);
+
       } catch (error) {
         console.error(error);
       }
     },
-
-
-    clearSearchQuery({ commit }) {
-      commit('CLEAR_SEARCH_QUERY_DATA');
-    },
+  
+    
+        clearSearchQuery({ commit }) {
+          commit('CLEAR_SEARCH_QUERY_DATA');
+        },
   },
 
   mutations: {

@@ -74,13 +74,12 @@
 
       previousPage() {
       if (this.currentPage > 1) {
-        this.actionCountries(this.currentPage - 1);
+        this.actionCountries({page:this.currentPage - 1});
         }
       },
       nextPage() {
         if (this.currentPage < this.getTotalPages) {
-          this.actionCountries(this.currentPage + 1);
-          console.log(this.currentPage)
+          this.actionCountries({page:this.currentPage + 1});
         }
       },
     },

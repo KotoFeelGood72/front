@@ -19,7 +19,7 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/admin/countries', 
+    path: '/admin/countries/page/:page', 
     component: CountriesPage,
     meta: {
       layout: 'admin-layout',
