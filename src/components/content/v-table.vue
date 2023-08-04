@@ -102,7 +102,7 @@ export default {
         field,
         order,
       });
-      this.$router.replace({query: {order: order, orderby: field}})
+      // this.$router.replace({query: {order: order, orderby: field}})
     },
     
   },

@@ -5,7 +5,7 @@ export default {
       icon: 'tabler:map-pin',
       isActive: false,
       submenu: [
-        { name: 'Страна', link: '/admin/countries/'},
+        { name: 'Страна', link: '/admin/countries/page/1'},
         { name: 'Регион', link: '/region'},
         { name: 'Город', link: '/city'},
       ]
