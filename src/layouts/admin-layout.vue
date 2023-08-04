@@ -1,8 +1,8 @@
 <template>
-  <div class="flex relative bg-light">
+  <div class="flex relative bg-[#FAFBFF]">
       <v-sidebar class="sticky z-10 top-0 left-0"/>
       <v-header/>
-      <div class="pt-[104px] w-full pb-[105px] bg-white">
+      <div class="pt-[104px] w-full pb-[105px]">
         <slot></slot>
       </div>
   </div>

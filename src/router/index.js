@@ -5,8 +5,11 @@ import VueRouter from "vue-router";
 
 // Import pages // 
 
-import Countries from '@/views/admin/tax/countries/CountriesPage.vue'
-import Country from '@/views/admin/tax/countries/CountryPage.vue'
+import CountriesPage from '@/views/admin/tax/countries/CountriesPage.vue'
+import addCountry from "@/views/admin/tax/countries/addCountry.vue";
+import editCountry from "@/views/admin/tax/countries/editCountry.vue";
+
+
 import VDashboard from "@/views/admin/pages/v-dashboard.vue";
 
 // End import Pages //
@@ -16,18 +19,25 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/admin/countries/', 
-    component: Countries,
+    path: '/admin/countries', 
+    component: CountriesPage,
     meta: {
       layout: 'admin-layout',
     },
   },
   {
-    path: '/admin/countries/page/:id', 
-    component: Country,
+    path: '/admin/countries/add', 
+    component: addCountry,
     meta: {
       layout: 'admin-layout',
-    }
+    },
+  },
+  {
+    path: '/admin/countries/edit/:id', 
+    component: editCountry,
+    meta: {
+      layout: 'admin-layout',
+    },
   },
   {
     path: '/',

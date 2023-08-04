@@ -30,7 +30,7 @@
                 </div>
               </th>
               <th class="edit-trigger absolute top-[50%]  right-0 -translate-y-[50%]">
-                <edit-btn/>
+                <edit-btn :data="item"/>
               </th>
             </tr>
         </template>
@@ -96,19 +96,22 @@ export default {
 
 
     sortOrder(field, order) {
-      this.actionCountries(1, field, order);
+      this.actionCountries(this.currentPage, field, order);
+      // this.$router.push({
+      //   path: `/admin/countries/page/${this.currentPage}`,
+      //   query: { order, orderby: field, limit: 15 }
+      // });
     },
 
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.actionCountries(this.currentPage - 1);
-      }
-    },
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.actionCountries(this.currentPage + 1);
-      }
-    },
+    mounted() {
+    // Считываем параметры запроса из адресной строки
+    const { order, orderby, limit } = this.$route.query;
+
+    // Вызываем actionCountries, передавая параметры запроса
+
+    console.log(order, orderby, limit)
+    this.actionCountries(1, orderby, order, limit);
+  },
   },
 };
 </script>

@@ -2,11 +2,11 @@
   <section class="w-full">
     <div class="container">
       <v-title title="Страна" class="mb-[40px]"/>
-      <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px]">
+      <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
           <v-search/>
           <div class="module-group flex justify-end">
-            <v-add-button class="mr-[20px]"/>
+            <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
             <v-delete-button class="mr-[20px]"/>
             <div class="settings-btn" @click="togglePopup">
               <button type="button" class="flex items-center justify-center w-[40px] h-[40px] rounded-[8px] bg-indigo-600 text-white">
@@ -63,7 +63,7 @@
     },
     data() {
       return {
-        select: [10, 20, 30, 40, 50],
+        select: [10, 20, 30, 40, 50]
       }
     },
     methods: {
@@ -78,9 +78,9 @@
         }
       },
       nextPage() {
-        console.log('Good')
         if (this.currentPage < this.getTotalPages) {
           this.actionCountries(this.currentPage + 1);
+          console.log(this.currentPage)
         }
       },
     },

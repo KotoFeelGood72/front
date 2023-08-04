@@ -28,7 +28,8 @@ export default {
         if (state.filters.searchQuery.trim() !== '') {
           params.search = state.filters.searchQuery;
         }
-        const response = await axios.get(`admin/countries/page/${page}`, {params})
+        const response = await axios.get(`admin/countries/page/${page}/`, {params})
+
 
         const {data} = response.data;
         
