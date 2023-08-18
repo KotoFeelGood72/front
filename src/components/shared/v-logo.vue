@@ -1,7 +1,7 @@
 <template>
   <div id="logo">
     <router-link to="/">
-      <img :src="require('@/assets/img/logo.png')" alt="">
+      <img :src="require('@/assets/img/logo-white.png')" alt="">
     </router-link>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div class="input-search bg-[#FAFBFF]">
+  <div class="input-search bg-[#FAFBFF] max-w-[353px] w-full">
     <input type="search" 
     placeholder="Поиск"
      class="border border-grey-300 rounded-[8px]" 
@@ -81,6 +81,8 @@ input {
   -moz-appearance: none;
   font-size: 14px;
   padding: 8px 17px;
+  min-height: 40px;
+  width: 100%;
   &:focus {
     outline: none;
   }

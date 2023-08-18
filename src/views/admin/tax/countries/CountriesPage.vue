@@ -1,38 +1,53 @@
 <template>
   <section class="w-full">
     <div class="container">
-      <v-title title="Страна" class="mb-[40px]"/>
+      <div class="module-head flex items-center justify-between mb-[40px]">
+        <v-title title="Страна"/>
+        <div class="flex items-center">
+          <button type="button" class="flex items-center mr-[30px]">
+            <global-icon icon="tabler:arrow-forward-up" width="20" height="20" color="#374151" class="mr-[8px]"/>
+            <p>По умолчанию</p>
+          </button>
+          <button type="button" class="flex items-center">
+            <global-icon icon="tabler:device-floppy" width="20" height="20" color="#374151" class="mr-[8px]"/>
+            <p>Сохранить</p>
+          </button>
+        </div>
+      </div>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
-          <v-search/>
-          <div class="module-group flex justify-end">
+          <div class="flex items-center justify-start flex-1">
             <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
             <v-delete-button class="mr-[20px]"/>
+            <v-search/>
+          </div>
+          <div class="module-group flex justify-end">
+            <div class="settings-btn mr-[20px]" @click="togglePopup">
+              <button type="button" class="flex items-center justify-center w-[40px] h-[40px] rounded-[8px] bg-indigo-600 text-white">
+                <global-icon icon="tabler:eye" width="20"/>
+              </button>
+            </div>
             <div class="settings-btn" @click="togglePopup">
               <button type="button" class="flex items-center justify-center w-[40px] h-[40px] rounded-[8px] bg-indigo-600 text-white">
-                <global-icon icon="tabler:settings" width="20"/>
+                <global-icon icon="tabler:filter-cog" width="20"/>
               </button>
             </div>
           </div>
         </div>
         <v-table/>
-        <div class="module-bottom flex items-center justify-end py-[9.5px]">
+        <div class="py-[19px] flex items-center justify-center border-b border-grey-200">
+          <button type="button" class="bg-indigo-600 text-white py-[10px] px-[18px] rounded-[8px] flex items-center justify-center">
+            <p class="text-14sm mr-[8px]">Показать еще</p>
+            <global-icon icon="tabler:arrow-down" width="20" height="20" color="white"/>
+          </button>
+        </div>
+        <div class="module-bottom flex items-center justify-between py-[9.5px]">
+          <div class="text-14sm text-grey-500">Всего записей: {{ getTotalPages }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
               <v-select :data="select"/>
             </div>
-          </div>
-          <div class="total-el text-grey-500 text-14sm mr-[25px]">
-            {{ getLengthCountries }} из {{ getTotalPages }}
-          </div>
-          <div class="navigation-module">
-            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400" @click="previousPage">
-              <global-icon icon="tabler:chevron-left" width="20"/>
-            </button>
-            <button type="button" class="w-[44px] h-[44px] items-center flex justify-center text-grey-400" @click="nextPage">
-              <global-icon icon="tabler:chevron-right" width="20"/>
-            </button>
           </div>
         </div>
       </div>
@@ -71,33 +86,9 @@
       togglePopup() {
         this.$store.commit('togglePopup')
       },
-
-      previousPage() {
-      if (this.currentPage > 1) {
-        this.actionCountries({page:this.currentPage - 1});
-        }
-      },
-      nextPage() {
-        if (this.currentPage < this.getTotalPages) {
-          this.actionCountries({page:this.currentPage + 1});
-        }
-      },
     },
     computed: {
-      getTotalPages() {
-        return this.$store.getters.getTotalPages
-      },
-      ...mapGetters(['getCountries', 'getCurrentPage']),
-      currentPage() {
-        return this.getCurrentPage;
-      },
-      getLengthCountries() {
-        if(this.$store.getters.getCountries.list) {
-          return this.$store.getters.getCountries.list.length
-        } else {
-          return null
-        }
-      }
+      ...mapGetters(['getCountries', 'getTotalPages']),
     },
   }
 </script>

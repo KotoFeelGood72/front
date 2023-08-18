@@ -19,6 +19,20 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/', 
+    component: () => import('@/views/WelcomeSite.vue'),
+    meta: {
+      layout: 'empty-layout',
+    },
+  },
+  {
+    path: '/login', 
+    component: () => import('@/views/admin/auth/AuthUser.vue'),
+    meta: {
+      layout: 'auth-layout',
+    },
+  },
+  {
     path: '/admin/countries/page/:page', 
     component: CountriesPage,
     meta: {
@@ -40,7 +54,7 @@ const routes = [
     },
   },
   {
-    path: '/',
+    path: '/admin',
     component: VDashboard,
     meta: {
       layout: 'admin-layout',
