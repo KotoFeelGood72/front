@@ -17,7 +17,7 @@
       </thead>
       <tbody>
         <template>
-            <tr v-for="item in getCountries.list" :key="item.id" class="py-[11px] relative  border-b border-grey-200">
+            <tr v-for="item in list" :key="item.id" class="py-[11px] relative  border-b border-grey-200">
               <th class="relative check-row w-[20px] min-w-[51px]">
                 <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem"
                 @input="checkedRow(item)">
@@ -66,6 +66,7 @@ export default {
     vSortItem,
     editBtn
   },
+  props: ['list'],
   data() {
     return {
       sortList,

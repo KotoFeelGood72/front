@@ -33,6 +33,7 @@ const routes = [
     },
   },
   {
+    name: 'countries-page',
     path: '/admin/countries/page/:page', 
     component: CountriesPage,
     meta: {

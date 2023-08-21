@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <v-table/>
+        <v-table :list="getCountries.list"/>
         <div class="py-[19px] flex items-center justify-center border-b border-grey-200">
           <button type="button" class="bg-indigo-600 text-white py-[10px] px-[18px] rounded-[8px] flex items-center justify-center">
             <p class="text-14sm mr-[8px]">Показать еще</p>
@@ -48,11 +48,13 @@
             <div class="col-row-select mr-[25px]">
               <v-select :data="select"/>
             </div>
+            <v-pagination :pages="visiblePages"/>
           </div>
         </div>
       </div>
     </div>
     <v-filter />
+
   </section>
 </template>
 
@@ -66,6 +68,10 @@
   import vFilter from '@/components/filter/v-filter.vue'
   import { mapActions, mapGetters } from 'vuex';
 
+
+  import vPagination from '@/components/templates/v-pagination.vue';
+
+
   export default {
     components: {
       vTable,
@@ -74,11 +80,13 @@
       vDeleteButton,
       vTitle,
       vSelect,
-      vFilter
+      vFilter,
+      vPagination
     },
     data() {
       return {
-        select: [10, 20, 30, 40, 50]
+        select: [10, 20, 30, 40, 50],
+        currentPage: 1
       }
     },
     methods: {
@@ -89,6 +97,19 @@
     },
     computed: {
       ...mapGetters(['getCountries', 'getTotalPages']),
+      visiblePages() {
+      const maxVisiblePages = 4; // Количество отображаемых ссылок пагинации
+      const pages = [];
+
+      const startPage = Math.max(this.currentPage - Math.floor(maxVisiblePages / 2), 1);
+      const endPage = Math.min(startPage + maxVisiblePages - 1, this.getTotalPages);
+
+      for (let page = startPage; page <= endPage; page++) {
+        pages.push(page);
+      }
+      console.log(pages)
+      return pages;
+    }
     },
   }
 </script>
