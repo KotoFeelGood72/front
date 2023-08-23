@@ -34,7 +34,7 @@
             </div>
           </div>
         </div>
-        <v-table :list="getCountries.list"/>
+        <v-table :list="countries.list"/>
         <div class="py-[19px] flex items-center justify-center border-b border-grey-200">
           <button type="button" class="bg-indigo-600 text-white py-[10px] px-[18px] rounded-[8px] flex items-center justify-center">
             <p class="text-14sm mr-[8px]">Показать еще</p>
@@ -42,13 +42,22 @@
           </button>
         </div>
         <div class="module-bottom flex items-center justify-between py-[9.5px]">
-          <div class="text-14sm text-grey-500">Всего записей: {{ getTotalPages }}</div>
+          <div class="text-14sm text-grey-500">Всего записей: {{ countries.total }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
               <v-select :data="select"/>
             </div>
-            <v-pagination :pages="visiblePages"/>
+            <paginate
+              :page-count="10"
+              :page-range="4"
+              :margin-pages="2"
+              :click-handler="paginateCall"
+              :prev-text="''"
+              :next-text="''"
+              :container-class="'pagination flex items-center'"
+              :page-class="'page-item w-[32px] h-[32px] flex items-center justify-center'">
+            </paginate>
           </div>
         </div>
       </div>
@@ -69,7 +78,6 @@
   import { mapActions, mapGetters } from 'vuex';
 
 
-  import vPagination from '@/components/templates/v-pagination.vue';
 
 
   export default {
@@ -81,36 +89,40 @@
       vTitle,
       vSelect,
       vFilter,
-      vPagination
     },
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        currentPage: 1
+        defaultPage: 1,
+        // currentPage: 1
       }
+    },
+    mounted() {
+      this.paginateCall()
     },
     methods: {
       ...mapActions(['actionCountries']),
       togglePopup() {
         this.$store.commit('togglePopup')
       },
+    paginateCall(pageNum) {
+      this.actionCountries({page: pageNum})
+      const newPath = `/admin/countries/page/${pageNum}`;
+      const routeWithoutQuery = { ...this.$route }; 
+      delete routeWithoutQuery.query; 
+      this.$router.push({ path: newPath, query: this.$route.query });
+    }
     },
     computed: {
       ...mapGetters(['getCountries', 'getTotalPages']),
-      visiblePages() {
-      const maxVisiblePages = 4; // Количество отображаемых ссылок пагинации
-      const pages = [];
-
-      const startPage = Math.max(this.currentPage - Math.floor(maxVisiblePages / 2), 1);
-      const endPage = Math.min(startPage + maxVisiblePages - 1, this.getTotalPages);
-
-      for (let page = startPage; page <= endPage; page++) {
-        pages.push(page);
-      }
-      console.log(pages)
-      return pages;
-    }
+      countries() {
+        return this.$store.state.country.countries
+      },
+      currentPage() {
+      return Number(this.$route.params.page) || 1;
     },
+    },
+
   }
 </script>
 

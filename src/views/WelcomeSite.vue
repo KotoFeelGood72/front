@@ -32,14 +32,6 @@
   justify-content: flex-start;
   li {
     padding: 24px 24px 0 0;
-
-
-
-
-
-
-
-
     &:nth-child(1) {
       img {
         z-index: 0;

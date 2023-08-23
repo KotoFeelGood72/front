@@ -2,8 +2,6 @@ import axios from 'axios';
 export default {
   state: {
     countries: [],
-    currentPage: 1,
-    totalPages: 0,
     sortField: '', 
     sortOrder: '',
     filters: {

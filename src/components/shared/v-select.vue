@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <select class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select" @change="selectOption">
+    <select v-model="selectedLimit" class="border border-grey-300 rounded-[8px] text-14sm text-grey-700 py-[3px] px-[10px] mr-[25px] col-row-select" @change="selectOption">
       <option v-for="(item, i) in data" :value="item" :key="item + '-' + i">{{ item }}</option>
     </select>
     <global-icon icon="eva:arrow-down-fill" width="17" height="20" color="#9CA3AF" class="select-arrow"/>
@@ -10,12 +10,16 @@
 <script>
   export default {
     props: ['data'],
+    data() {
+      return {
+        selectedLimit: this.$store.state.country.filters.limit,
+      }
+    },
     methods: {
-      selectOption(e) {
-        const currentPage = this.$store.getters.getCurrentPage;
-        const limitNumber = Number(e.target.value);
-        this.$store.commit('setLimitCountry', limitNumber);
-        this.$store.dispatch('actionCountries', currentPage );
+      selectOption() {
+        this.$store.commit('setLimitCountry', this.selectedLimit);
+        this.$store.dispatch('actionCountries', {page: this.$store.state.country.currentPage});
+        this.$router.replace({ query: { limit: this.selectedLimit, page: this.$store.state.currentPage } });
       }
     }
   }
