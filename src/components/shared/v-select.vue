@@ -18,8 +18,8 @@
     methods: {
       selectOption() {
         this.$store.commit('setLimitCountry', this.selectedLimit);
-        this.$store.dispatch('actionCountries', {page: this.$store.state.country.currentPage});
-        this.$router.replace({ query: { limit: this.selectedLimit, page: this.$store.state.currentPage } });
+        this.$store.dispatch('actionCountries', {page: this.$route.params.page});
+        this.$router.replace({ query: { limit: this.selectedLimit } });
       }
     }
   }

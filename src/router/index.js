@@ -70,22 +70,20 @@ const router = new VueRouter({
 })
 
 
-const originalPush = router.push
-router.push = function push(location, onResolve, onReject)
-{
-    if (onResolve || onReject) {
-        return originalPush.call(this, location, onResolve, onReject)
-    }
+// const originalPush = router.push
+// router.push = function push(location, onResolve, onReject) {
+//   if (onResolve || onReject) {
+//     return originalPush.call(this, location, onResolve, onReject)
+//   }
  
-    return originalPush.call(this, location).catch((err) => {
-        if (VueRouter.isNavigationFailure(err)) {
-            return err
-        }
+//   return originalPush.call(this, location).catch(err => {
+//     if (VueRouter.isNavigationFailure(err)) {
+//       return new Promise(resolve => resolve())
+//     }
    
-        return Promise.reject(err)
-    })
-}
-
+//     return Promise.reject(err)
+//   })
+// }
 
 
 export default router

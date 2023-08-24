@@ -46,18 +46,20 @@
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
-              <v-select :data="select"/>
+              <v-select :data="select" @limit-changed="updatePagination"/>
             </div>
-            <paginate
-              :page-count="10"
-              :page-range="4"
+            <vue-paginate
+              v-if="totalPage"
+              :page-count="totalPage"
+              :page-range="8"
               :margin-pages="2"
               :click-handler="paginateCall"
               :prev-text="''"
               :next-text="''"
+              v-model="currentPage"
               :container-class="'pagination flex items-center'"
-              :page-class="'page-item w-[32px] h-[32px] flex items-center justify-center'">
-            </paginate>
+              :page-class="'page-item min-w-[32px] h-[32px] flex items-center justify-center text-14sm'">
+            </vue-paginate>
           </div>
         </div>
       </div>
@@ -93,25 +95,31 @@
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        defaultPage: 1,
-        // currentPage: 1
       }
     },
     mounted() {
-      this.paginateCall()
+      this.actionCountries({page: this.$route.params.page})
     },
     methods: {
       ...mapActions(['actionCountries']),
+      updatePagination(newLimit) {
+        this.selectLimit = newLimit; // Обновляем значение
+        console.log(this.selectLimit)
+        console.log(this.$store.state.country.filters.limit)
+      },
       togglePopup() {
         this.$store.commit('togglePopup')
       },
-    paginateCall(pageNum) {
-      this.actionCountries({page: pageNum})
-      const newPath = `/admin/countries/page/${pageNum}`;
-      const routeWithoutQuery = { ...this.$route }; 
-      delete routeWithoutQuery.query; 
-      this.$router.push({ path: newPath, query: this.$route.query });
-    }
+      paginateCall(pageNum) {
+        this.fetchCountries(pageNum)
+        const newPath = `/admin/countries/page/${pageNum}`;
+        const routeWithoutQuery = { ...this.$route }; 
+        delete routeWithoutQuery.query; 
+        this.$router.replace({ path: newPath, query: this.$route.query });
+      },
+      fetchCountries(pageNum) {
+        this.actionCountries({page: pageNum})
+      }
     },
     computed: {
       ...mapGetters(['getCountries', 'getTotalPages']),
@@ -119,8 +127,11 @@
         return this.$store.state.country.countries
       },
       currentPage() {
-      return Number(this.$route.params.page) || 1;
-    },
+        return Number(this.$route.params.page) || 1;
+      },
+      totalPage() {
+        return this.countries.pages
+      }
     },
 
   }
@@ -140,5 +151,26 @@
   position: relative;
   
   width: 63px;
+}
+
+:deep(.page-item) {
+  margin: 0 3px;
+  a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    overflow: hidden;
+    padding: 4px!important;
+  }
+  &.active {
+    a {
+      background-color: #E0E7FF;
+      pointer-events: none;
+      user-select: none;
+    }
+  }
 }
 </style>

@@ -39,7 +39,7 @@
                 </div>
               </th>
               <th class="edit-trigger absolute top-[50%]  right-0 -translate-y-[50%]">
-                <edit-btn :data="item"/>
+                <edit-btn :data="item" @change-countries="getCountry(item)"/>
               </th>
             </tr>
         </template>
@@ -84,6 +84,9 @@ export default {
     this.actionCountries({page: this.getCurrentPage});
   },
   methods: {
+    getCountry(item) {
+      this.$store.commit('setCountryDetail', item)
+    },
     selectAllRows() {
       this.checkItem = !this.checkItem;
 
