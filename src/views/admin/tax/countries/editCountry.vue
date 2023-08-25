@@ -62,7 +62,13 @@
           code: this.getsCountry.code,
           active: this.getsCountry.active,
         }
-        axios.post(`/admin/countries/edit/`, data)      
+        try {
+          axios.post(`/admin/countries/edit/`, data)
+          this.$router.push('/admin/countries')
+        } catch (error) {
+            console.log(error);
+        }
+        
       }
     },
     computed: {

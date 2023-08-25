@@ -40,20 +40,14 @@
       },
       clearSearch() {
         this.$store.dispatch('clearSearchQuery');
+        this.$store.dispatch('actionCountries', {page: this.$route.params.page});
         this.searchQuery = ''
       },
       searchQuerys() {
-        // if (this.searchQuery.length > 0) {
-          // Устанавливаем searchQuery в состояние Vuex
           this.$store.commit('setSearchQuery', this.searchQuery);
-          const currentPage = this.$store.getters.getCurrentPage;
-          this.$store.dispatch('actionCountries', {page: currentPage});
-        // } else {
-          this.$store.dispatch('clearSearchQuery');
-        // }
+          this.$store.dispatch('actionCountries', {search: this.searchQuery, page: this.$route.params.page})
       },
-      
-    },
+    }
   }
 </script>
 

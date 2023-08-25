@@ -19,8 +19,7 @@
         <template>
             <tr v-for="item in list" :key="item.id" class="py-[11px] relative  border-b border-grey-200">
               <th class="relative check-row w-[20px] min-w-[51px]">
-                <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem"
-                @input="checkedRow(item)">
+                <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem" @input="checkedRow(item)">
                 <label :for="'countries-' + item.id"></label>
               </th>
               <th>
@@ -50,7 +49,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 import VStatus from '@/components/label/v-status.vue';
 import vSortItem from './v-sort-item.vue';
 import editBtn from '../shared/edit-btn.vue';
@@ -75,13 +74,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getCountries', 'getCurrentPage']),
-    totalPages() {
-      return this.getTotalPages;
-    },
-  },
-  mounted() {
-    this.actionCountries({page: this.getCurrentPage});
+    countries() {
+      return this.$store.state.country.countries
+    }
   },
   methods: {
     getCountry(item) {
@@ -89,32 +84,29 @@ export default {
     },
     selectAllRows() {
       this.checkItem = !this.checkItem;
-
-      for (const item of this.getCountries.list) {
+      for (const item of this.countries.list) {
         item.checked = this.checkItem;
       }
-
       this.updateSelectedItems();
     },
     checkedRow(item) {
       item.checked = !item.checked;
-      console.log(item.checked, 'Good')
       this.updateSelectedItems();
     },
     updateSelectedItems() {
-      this.selectedItems = this.getCountries.list.filter(item => item.checked).map(item => item.id);
-      this.checkItem = this.selectedItems.length === this.getCountries.list.length;
-
-      console.log(this.selectedItems)
+      this.selectedItems = this.countries.list.filter(item => item.checked).map(item => item.id);
+      this.checkItem = this.selectedItems.length === this.countries.list.length;
+      this.$store.commit('setDeleteArr', this.selectedItems)
     },
     async submitCountry(item) {
+      const data = {
+        id: item.id,
+        active: item.active === 1 ? 0 : 1,
+        code: item.code,
+        name: item.name,
+      }
       try {
-        await axios.post('admin/countries/edit', {
-          id: item.id,
-          active: item.active === 1 ? 0 : 1,
-          code: item.code,
-          name: item.name,
-        });
+        await axios.post('admin/countries/edit', data)
         if(item) {
           item.active = item.active === 1 ? 0 : 1;
         }
@@ -126,13 +118,12 @@ export default {
 
 
     sortOrder(field, order) {
-      console.log(this.$route.path)
+      // console.log(this.$route.path)
       this.actionCountries({
-        page: this.currentPage,
+        page: this,
         field,
         order,
       });
-      // this.$router.replace({query: {order: order, orderby: field}})
     },
     
   },

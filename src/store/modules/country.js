@@ -8,6 +8,7 @@ export default {
     activePage: 1,
     countryDetail: {},
     status: Number,
+    deleteArray: [],
     filters: {
       limit: 10,
       code: '',
@@ -29,14 +30,13 @@ export default {
           params.search = state.filters.searchQuery;
         }
 
-        if(page) {
-
+        // if(page) {
+          console.log(params)
           const response = await axios.get(`admin/countries/page/${page}`, { params });
           const { data } = response.data;
           commit('setCountries', data);
-          commit('setCurrentPage', page);
-          commit('setTotalPages', data.total);
-        }
+          commit('loadmoreCountry', data);
+        // }
   
 
       } catch (error) {
@@ -44,18 +44,21 @@ export default {
       }
     },
 
-      // async saveCountryDetails({commit, state}) {
-      //   try {
-      //     const response = await axios.post(`admin/countries/edit/`, {
-      //       id: state.country.countryDetail.id
-      //     })
+    async deleteCountries({ commit, dispatch }, ids) {
+      try {
+        await axios.post('admin/countries/delete/', ids);
 
-      //     commit('setCountryDetail', state)
-      //   } catch (error) {
-      //       console.log(error);
-      //   };
+        // console.log(ids)
         
-      // },
+        // Удалите элементы из состояния
+        commit('REMOVE_DELETED_ITEMS', ids);
+        
+        // Перезагрузите данные
+        dispatch('actionCountries', { page: 1 });
+      } catch (error) {
+        console.error(error);
+      }
+    },
   
     
         clearSearchQuery({ commit }) {
@@ -68,12 +71,8 @@ export default {
       state.countries = countries;
     },
 
-    setCurrentPage(state, page) {
-      state.activePage = page;
-    },
-
-    setTotalPages(state, totalPages) {
-      state.totalPages = totalPages;
+    loadmoreCountry(state, newCountry) {
+      state.countries.list = state.countries.list.concat(newCountry)
     },
 
     setLimitCountry(state, limit) {
@@ -88,13 +87,6 @@ export default {
       state.filters.searchQuery = ''; 
     },
 
-    setSortField(state, field) {
-      state.sortField = field;
-    },
-
-    setSortOrder(state, order) {
-      state.sortOrder = order;
-    },
 
     setCountryDetail(state, country) {
       state.countryDetail = country;
@@ -102,22 +94,20 @@ export default {
 
     setChangeStatus(state, status) {
       state.status = status
-    }
+    },
 
+    setDeleteArr(state, deleteArray) {
+      state.deleteArray = deleteArray
+    },
+
+    REMOVE_DELETED_ITEMS(state, itemID) {
+      let countries = state.countries.list.filter(i => i.id !== itemID)
+      state.countries = countries
+      state.deleteArray = []
+    }
   },
 
   getters: {
-    getCountries(state) {
-      return state.countries;
-    },
-    getCountryDetail(state) {
-      return state.countryDetail;
-    },
-    getCurrentPage(state) {
-      return state.currentPage;
-    },
-    getTotalPages(state) {
-      return state.totalPages;
-    },
+
   }
 }

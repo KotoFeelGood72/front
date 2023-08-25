@@ -6,11 +6,11 @@
         <div class="country_input--group shadow-lg rounded-[15px] flex-1 p-[40px] flex items-center bg-white mr-[25px]">
           <label for="countryCode">
             <p class="mb-[10px] font-medium text-grey-700">Код страны</p>
-            <input type="text" id="countryCode" placeholder="Пример: 1234">
+            <input type="text" id="countryCode" placeholder="Пример: RU" v-model="code">
           </label>
           <label for="countryName">
             <p class="mb-[10px] font-medium text-grey-700">Название страны</p>
-            <input type="text" id="countryName" placeholder="Название страны заполненное">
+            <input type="text" id="countryName" placeholder="Название страны заполненное" v-model="name">
           </label>
         </div>
         <div class="country-add min-w-[331px] bg-white shadow-lg p-[30px] rounded-[15px]">
@@ -25,7 +25,7 @@
             </li>
           </ul>
           <div class="country-save">
-            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" >
+            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" @click="addCountry">
               <global-icon icon="tabler:plus" width="20" height="20" class="mr-[8px]"/>
               <p>Добавить</p>
             </button>
@@ -37,14 +37,29 @@
 </template>
 
 <script>
-  import vTitle from '@/components/content/v-title.vue';
+  import axios from 'axios'
   export default {
     components: {
-      vTitle,
+      vTitle: () => import('@/components/content/v-title.vue')
+    },
+    data() {
+      return {
+        name: '',
+        code: ''
+      }
     },
     methods: {
       addCountry() {
-
+        const data = {
+          name: this.name,
+          code: this.code
+        }
+        try {
+          axios.post('admin/countries/add', data)
+          this.$router.push('/admin/countries')
+        } catch (error) {
+            console.log(error);
+        }
       }
     },
   }

@@ -17,10 +17,20 @@
     },
     methods: {
       selectOption() {
-        this.$store.commit('setLimitCountry', this.selectedLimit);
-        this.$store.dispatch('actionCountries', {page: this.$route.params.page});
-        this.$router.replace({ query: { limit: this.selectedLimit } });
+        const selectedLimit = this.selectedLimit;
+
+        this.$store.commit('setLimitCountry', selectedLimit);
+        
+        const totalPages = Math.ceil(this.$store.state.country.countries.total / selectedLimit);
+        const currentPage = parseInt(this.$route.params.page);
+        
+        if (currentPage > totalPages) {
+          this.$router.push({ name: 'countries-page', query: { limit: selectedLimit }, params: { page: totalPages } });
+        } else {
+          this.$router.push({ name: 'countries-page', query: { limit: selectedLimit }, params: { page: currentPage } });
+        }
       }
+
     }
   }
 </script>

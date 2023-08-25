@@ -18,7 +18,7 @@
         <div class="module-head flex justify-between mb-[29px]">
           <div class="flex items-center justify-start flex-1">
             <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
-            <v-delete-button class="mr-[20px]"/>
+            <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
             <v-search/>
           </div>
           <div class="module-group flex justify-end">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <v-table :list="countries.list"/>
-        <div class="py-[19px] flex items-center justify-center border-b border-grey-200">
+        <div class="py-[19px] flex items-center justify-center border-b border-grey-200" @click="loadmore">
           <button type="button" class="bg-indigo-600 text-white py-[10px] px-[18px] rounded-[8px] flex items-center justify-center">
             <p class="text-14sm mr-[8px]">Показать еще</p>
             <global-icon icon="tabler:arrow-down" width="20" height="20" color="white"/>
@@ -48,8 +48,9 @@
             <div class="col-row-select mr-[25px]">
               <v-select :data="select" @limit-changed="updatePagination"/>
             </div>
+            
             <vue-paginate
-              v-if="totalPage"
+              v-if="totalPage && currentPage"
               :page-count="totalPage"
               :page-range="8"
               :margin-pages="2"
@@ -65,7 +66,6 @@
       </div>
     </div>
     <v-filter />
-
   </section>
 </template>
 
@@ -77,10 +77,7 @@
   import vTitle from '@/components/content/v-title.vue';
   import vSelect from '@/components/shared/v-select.vue';
   import vFilter from '@/components/filter/v-filter.vue'
-  import { mapActions, mapGetters } from 'vuex';
-
-
-
+  import { mapActions } from 'vuex';
 
   export default {
     components: {
@@ -95,42 +92,44 @@
     data() {
       return {
         select: [10, 20, 30, 40, 50],
+        currentPage: Number(this.$route.params.page) || 1
       }
     },
     mounted() {
       this.actionCountries({page: this.$route.params.page})
     },
+    computed: {
+      countries() {
+        return this.$store.state.country.countries
+      },
+      totalPage() {
+        return this.countries.pages
+      },
+      activeDeleteItem() {
+        return this.$store.state.country.deleteArray
+      }
+    },
     methods: {
       ...mapActions(['actionCountries']),
       updatePagination(newLimit) {
-        this.selectLimit = newLimit; // Обновляем значение
-        console.log(this.selectLimit)
-        console.log(this.$store.state.country.filters.limit)
+        this.selectLimit = newLimit; 
       },
       togglePopup() {
         this.$store.commit('togglePopup')
       },
       paginateCall(pageNum) {
         this.fetchCountries(pageNum)
-        const newPath = `/admin/countries/page/${pageNum}`;
-        const routeWithoutQuery = { ...this.$route }; 
-        delete routeWithoutQuery.query; 
-        this.$router.replace({ path: newPath, query: this.$route.query });
+        this.$router.push({ name: 'countries-page', params: {page: pageNum}, query: this.$route.query });
       },
       fetchCountries(pageNum) {
         this.actionCountries({page: pageNum})
-      }
-    },
-    computed: {
-      ...mapGetters(['getCountries', 'getTotalPages']),
-      countries() {
-        return this.$store.state.country.countries
       },
-      currentPage() {
-        return Number(this.$route.params.page) || 1;
+      async deleteSelectedItems() {
+        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})
       },
-      totalPage() {
-        return this.countries.pages
+      loadmore() {
+        this.fetchCountries(this.currentPage++);
+        console.log(this.$route.params.page)
       }
     },
 

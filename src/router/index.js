@@ -41,6 +41,10 @@ const routes = [
     },
   },
   {
+    path: '/admin/countries/', 
+    redirect: { name: 'countries-page', params: { page: 1 } }
+  },
+  {
     path: '/admin/countries/add', 
     component: addCountry,
     meta: {
@@ -70,20 +74,6 @@ const router = new VueRouter({
 })
 
 
-// const originalPush = router.push
-// router.push = function push(location, onResolve, onReject) {
-//   if (onResolve || onReject) {
-//     return originalPush.call(this, location, onResolve, onReject)
-//   }
- 
-//   return originalPush.call(this, location).catch(err => {
-//     if (VueRouter.isNavigationFailure(err)) {
-//       return new Promise(resolve => resolve())
-//     }
-   
-//     return Promise.reject(err)
-//   })
-// }
 
 
 export default router
