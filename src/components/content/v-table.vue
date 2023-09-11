@@ -10,7 +10,7 @@
           <th v-for="(item, i) in sortList.sortList" :key="'sort-item' + i">
             <v-sort-item
               :data=item
-              @toggleSortOrder="sortOrder"
+              @toggle-sortered="sortering"
             />
           </th>
         </tr>
@@ -116,16 +116,14 @@ export default {
     },
     ...mapActions(['actionCountries']),
 
-
-    sortOrder(field, order) {
-      // console.log(this.$route.path)
-      this.actionCountries({
-        page: this,
-        field,
-        order,
+    sortering(data, dir) {
+      console.log(data, dir)
+      this.$store.dispatch('actionCountries', {
+        page: this.$route.params.page,
+        field: data.orderby,
+        order: dir ? 'ASC' : 'DESC'
       });
-    },
-    
+    }    
   },
 };
 </script>
@@ -187,21 +185,6 @@ export default {
   }
 }
 
-
-// .empty-check {
-//   &:before {
-//       position: absolute;
-//       top: 50%;
-//       left: 0;
-//       transform: translateY(-50%);
-//       width: 20px;
-//       height: 20px;
-//       content: '';
-//       border: 1px solid #D1D5DB;
-//       border-radius: 5px;
-//       transition: all .2s ease;
-//     }
-// }
 
 
 </style>

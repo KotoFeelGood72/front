@@ -49,14 +49,22 @@
       }
     },
     methods: {
-      addCountry() {
+      async addCountry() {
         const data = {
           name: this.name,
           code: this.code
         }
         try {
-          axios.post('admin/countries/add', data)
-          this.$router.push('/admin/countries')
+          await axios.post('admin/countries/add', data)
+          await this.$router.push('/admin/countries')
+          setTimeout(() => {
+            this.$notify({
+              group: 'all',
+              title: 'Новый объект успешно добавлен',
+              text: 'Вы успешно добавили обьект, измненения вступают в силу с момента добавления',
+              type: 'success',
+            });
+          }, 200)
         } catch (error) {
             console.log(error);
         }

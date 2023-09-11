@@ -3,14 +3,20 @@ import Vuex from 'vuex'
 import country from './modules/country'
 import search from './modules/search'
 import popup from './modules/popup'
-// import createPersistedState from "vuex-persistedstate";
+import auth from './modules/auth'
+import modal from './modules/modal'
+import alert from './modules/alert'
+
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-    // plugins: [createPersistedState()],
     modules: {
       country,
       search,
-      popup
+      popup,
+      auth,
+      modal,
+      alert
     }
 })

@@ -25,7 +25,7 @@ export default {
       try {
         const response = await axios.get(`admin/countries/search/${query}`);
         commit('setSearchQuery', response.data);
-        console.log(response.data);
+        // console.log(response.data);
       } catch (error) {
         console.log(error);
       }

@@ -35,13 +35,13 @@
           </div>
         </div>
         <v-table :list="countries.list"/>
-        <div class="py-[19px] flex items-center justify-center border-b border-grey-200" @click="loadmore">
+        <!-- <div class="py-[19px] flex items-center justify-center border-b border-grey-200" @click="loadmore">
           <button type="button" class="bg-indigo-600 text-white py-[10px] px-[18px] rounded-[8px] flex items-center justify-center">
             <p class="text-14sm mr-[8px]">Показать еще</p>
             <global-icon icon="tabler:arrow-down" width="20" height="20" color="white"/>
           </button>
-        </div>
-        <div class="module-bottom flex items-center justify-between py-[9.5px]">
+        </div> -->
+        <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
           <div class="text-14sm text-grey-500">Всего записей: {{ countries.total }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
@@ -126,13 +126,14 @@
       },
       async deleteSelectedItems() {
         await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})
+        this.$notify({
+          group: 'all',
+          title: 'Объект успешно удален',
+          text: 'Вы успешно удалили обьект, измненения вступают в силу с момента изменения',
+          type: 'success',
+        });
       },
-      loadmore() {
-        this.fetchCountries(this.currentPage++);
-        console.log(this.$route.params.page)
-      }
-    },
-
+    }
   }
 </script>
 

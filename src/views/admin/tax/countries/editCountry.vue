@@ -1,6 +1,7 @@
 <template>
   <section class="w-full">
     <div class="container">
+      <vAlert v-if="isPopupOpen" @remove-country="deleteCountry" @hidden-alert="togglePopup"/>
       <v-title title="Редактировать страну" class="mb-[40px]"/>
       <div class="country-row flex items-start">
         <div class="country_input--group shadow-lg rounded-[15px] flex-1 p-[40px] flex items-center bg-white mr-[25px]">
@@ -33,7 +34,7 @@
               <global-icon icon="tabler:brand-ubuntu" width="20" height="20" class="mr-[8px]"/>
               <p>Сохранить</p>
             </button>
-            <v-delete-button hidden="true" classes="bg-pink-600 h-[50px]"/>
+            <v-delete-button hidden="true" classes="bg-pink-600 h-[50px]" @click.native="togglePopup"/>
           </div>
         </div>
       </div>
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+  import vAlert from '@/components/alert/alert-default.vue';
   import vTitle from '@/components/content/v-title.vue';
   import vSelect from '@/components/input/v-select.vue';
   import vDeleteButton from '@/components/button/v-delete-button.vue';
@@ -52,26 +54,63 @@
     components: {
       vTitle,
       vSelect,
-      vDeleteButton
+      vDeleteButton,
+      vAlert
     },
     methods: {
-      saveCountry() {
-        const data = {
-          id: this.getsCountry.id,
-          name: this.getsCountry.name,
-          code: this.getsCountry.code,
-          active: this.getsCountry.active,
-        }
+      togglePopup() {
+        this.$store.commit('togglePopup')
+      },
+      async deleteCountry() {
         try {
-          axios.post(`/admin/countries/edit/`, data)
-          this.$router.push('/admin/countries')
+          const idDetails = [this.getsCountry.id]
+          const { data } = await axios.post(`/admin/countries/delete/`, {
+            ids: idDetails
+          })
+
+          if(data.status) {
+            this.togglePopup();
+            await this.$router.go(-1);
+            setTimeout(() => {
+              this.$notify({
+                group: 'all',
+                title: 'Объект успешно удален',
+                text: 'Вы успешно удалили обьект, измненения вступают в силу с момента изменения',
+                type: 'success',
+              });
+            }, 200)
+          }
         } catch (error) {
             console.log(error);
         }
-        
+      },
+      async saveCountry() {
+      const data = {
+        id: this.getsCountry.id,
+        name: this.getsCountry.name,
+        code: this.getsCountry.code,
+        active: this.getsCountry.active,
+      };
+      try {
+        await axios.post(`/admin/countries/edit/`, data);
+        await this.$router.push('/admin/countries');
+        setTimeout(() => {
+          this.$notify({
+            group: 'all',
+            title: 'Объект успешно отредактирован',
+            text: 'Вы успешно отредактировали обьект, измненения вступают в силу с момента редактирования',
+            type: 'success',
+          });
+        }, 200)
+      } catch (error) {
+        console.log(error);
       }
+    }
     },
     computed: {
+      isPopupOpen() {
+        return this.$store.getters.getPopupStatus
+      },
       getsCountry() {
         return this.$store.state.country.countryDetail
       },

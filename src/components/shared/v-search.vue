@@ -45,7 +45,9 @@
       },
       searchQuerys() {
           this.$store.commit('setSearchQuery', this.searchQuery);
-          this.$store.dispatch('actionCountries', {search: this.searchQuery, page: this.$route.params.page})
+          this.$store.dispatch('actionCountries', {
+            page: this.$route.params.page,
+          })
       },
     }
   }

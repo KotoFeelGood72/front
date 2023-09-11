@@ -121,4 +121,9 @@
     }
   }
 }
+
+
+.router-link-exact-active {
+  color: white;
+}
 </style>

@@ -3,8 +3,6 @@ export default {
   state: {
     countries: [],
     page: 1,
-    sortField: '', 
-    sortOrder: '',
     activePage: 1,
     countryDetail: {},
     status: Number,
@@ -29,16 +27,11 @@ export default {
         if (state.filters.searchQuery.trim() !== '') {
           params.search = state.filters.searchQuery;
         }
-
-        // if(page) {
-          console.log(params)
           const response = await axios.get(`admin/countries/page/${page}`, { params });
           const { data } = response.data;
-          commit('setCountries', data);
-          commit('loadmoreCountry', data);
-        // }
-  
 
+          // console.log(response.data)
+          commit('setCountries', data);
       } catch (error) {
         console.error(error);
       }
@@ -47,13 +40,7 @@ export default {
     async deleteCountries({ commit, dispatch }, ids) {
       try {
         await axios.post('admin/countries/delete/', ids);
-
-        // console.log(ids)
-        
-        // Удалите элементы из состояния
         commit('REMOVE_DELETED_ITEMS', ids);
-        
-        // Перезагрузите данные
         dispatch('actionCountries', { page: 1 });
       } catch (error) {
         console.error(error);
@@ -61,18 +48,20 @@ export default {
     },
   
     
-        clearSearchQuery({ commit }) {
-          commit('CLEAR_SEARCH_QUERY_DATA');
-        },
+    clearSearchQuery({ commit }) {
+      commit('CLEAR_SEARCH_QUERY_DATA');
+    },
   },
 
   mutations: {
-    setCountries(state, countries) {
-      state.countries = countries;
+
+    setSortOrder(state, sortOrder) {
+      state.sortOrder = sortOrder;
     },
 
-    loadmoreCountry(state, newCountry) {
-      state.countries.list = state.countries.list.concat(newCountry)
+
+    setCountries(state, countries) {
+      state.countries = countries;
     },
 
     setLimitCountry(state, limit) {
@@ -106,8 +95,4 @@ export default {
       state.deleteArray = []
     }
   },
-
-  getters: {
-
-  }
 }
