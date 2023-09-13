@@ -5,12 +5,10 @@ import store from '@/store';
 
 
 
-// Import pages // 
-
-import CountriesPage from '@/views/admin/tax/countries/CountriesPage.vue'
-import addCountry from "@/views/admin/tax/countries/addCountry.vue";
-import editCountry from "@/views/admin/tax/countries/editCountry.vue";
-
+import countriesRoutes from "./countries";
+import regionsRoutes from "./regions";
+import citiesRoutes from "./cities";
+import defaultRoutes from './default'
 
 import VDashboard from "@/views/admin/pages/v-dashboard.vue";
 
@@ -20,76 +18,14 @@ import VDashboard from "@/views/admin/pages/v-dashboard.vue";
 Vue.use(VueRouter)
 
 const routes = [
+  ...countriesRoutes,
+  ...regionsRoutes,
+  ...defaultRoutes,
+  ...citiesRoutes,
   {
-    path: '/', 
-    component: () => import('@/views/WelcomeSite.vue'),
-    meta: {
-      layout: 'empty-layout',
-    },
-  },
-  {
-    path: '/login', 
-    component: () => import('@/views/admin/auth/AuthUser.vue'),
-    meta: {
-      layout: 'auth-layout',
-    },
-  },
-  {
-    path: '/register', 
-    component: () => import('@/views/admin/auth/AuthRegister.vue'),
-    meta: {
-      layout: 'auth-layout',
-    },
-  },
-  {
-    name: 'countries-page',
-    path: '/admin/countries/page/:page', 
-    component: CountriesPage,
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    },
-  },
-  {
-    path: '/admin/countries/',
-    redirect: { name: 'countries-page', params: { page: 1 } },
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    },
-  },
-  {
-    path: '/admin/city/',
-    component: () => import('@/views/admin/tax/city/CityPage.vue'),
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    },
-  },
-  {
-    path: '/admin/countries/add', 
-    component: addCountry,
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    },
-  },
-  {
-    path: '/admin/countries/edit/:id', 
-    component: editCountry,
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    },
-  },
-  {
-    name: 'admin',
     path: '/admin/',
     component: VDashboard,
-    meta: {
-      layout: 'admin-layout',
-      auth: true
-    }
+    meta: { layout: 'admin-layout', auth: true }
   },
 ];
 

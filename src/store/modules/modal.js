@@ -4,6 +4,7 @@ export default {
     modal: {
       user: false,
       note: false,
+      filter: false,
     }
   },
   mutations: {

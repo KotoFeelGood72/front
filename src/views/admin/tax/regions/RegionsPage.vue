@@ -2,7 +2,7 @@
   <section class="w-full">
     <div class="container">
       <div class="module-head flex items-center justify-between mb-[40px]">
-        <v-title title="Страна"/>
+        <v-title title="Регионы"/>
         <v-btn-settings/>
       </div>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
@@ -25,9 +25,9 @@
             </div>
           </div>
         </div>
-        <v-table :list="countries.list" :sortTable="sortCountry" address="countries" :type="countries" @routeDetail="nextToDetail" @sortAction="sortWork" inst="country"/>
+        <v-table :list="regions.list" :sortTable="sortRegions" address="regions" :type="regions" @routeDetail="nextToDetail" @sortAction="sortWork"/>
         <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
-          <div class="text-14sm text-grey-500">Всего записей: {{ countries.total }}</div>
+          <div class="text-14sm text-grey-500">Всего записей: {{ regions.total }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import { sortCountry } from '@/data/sort.js'
+  import { sortRegions } from '@/data/sort.js'
 
   export default {
     components: {
@@ -70,22 +70,22 @@
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        sortCountry,
+        sortRegions,
         currentPage: Number(this.$route.params.page) || 1
       }
     },
     mounted() {
-      this.$store.dispatch('actionCountries', { page: this.$route.params.page })
+      this.$store.dispatch('actionRegions', { page: this.$route.params.page })
     },
     computed: {
-      countries() {
-        return this.$store.state.country.countries
+      regions() {
+        return this.$store.state.regions.regions
       },
       totalPage() {
-        return this.countries.pages
+        return this.regions.pages
       },
       activeDeleteItem() {
-        return this.$store.state.country.deleteArray
+        return this.$store.state.regions.deleteArray
       }
     },
     methods: {
@@ -93,10 +93,10 @@
         this.$store.commit('openPopup', 'filter')
       },
       nextToDetail(item) {
-        this.$store.commit('setCountryDetail', item);
+        this.$store.commit('setRegionsDetail', item);
       },
       sortWork(data, dir) {
-        this.$store.dispatch('actionCountries', {
+        this.$store.dispatch('actionRegions', {
         page: this.$route.params.page,
         field: data.orderby,
         order: dir ? 'ASC' : 'DESC'
@@ -106,14 +106,14 @@
         this.selectLimit = newLimit; 
       },
       paginateCall(pageNum) {
-        this.fetchCountries(pageNum)
-        this.$router.push({ name: 'countries-page', params: {page: pageNum}, query: this.$route.query });
+        this.fetchRegions(pageNum)
+        this.$router.push({ name: 'regions-page', params: {page: pageNum}, query: this.$route.query });
       },
-      fetchCountries(pageNum) {
-        this.$store.dispatch('actionCountries', { page: pageNum })
+      fetchRegions(pageNum) {
+        this.$store.dispatch('actionRegions', { page: pageNum })
       },
       async deleteSelectedItems() {
-        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})
+        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.regions.deleteArray})
         this.$notify({
           group: 'all',
           title: 'Объект успешно удален',

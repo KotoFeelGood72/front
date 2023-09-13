@@ -2,13 +2,22 @@
   <section class="w-full">
     <div class="container">
       <div class="module-head flex items-center justify-between mb-[40px]">
-        <v-title title="Страна"/>
-        <v-btn-settings/>
+        <v-title title="Город"/>
+        <div class="flex items-center">
+          <button type="button" class="flex items-center mr-[30px]">
+            <global-icon icon="tabler:arrow-forward-up" width="20" height="20" color="#374151" class="mr-[8px]"/>
+            <p>По умолчанию</p>
+          </button>
+          <button type="button" class="flex items-center">
+            <global-icon icon="tabler:device-floppy" width="20" height="20" color="#374151" class="mr-[8px]"/>
+            <p>Сохранить</p>
+          </button>
+        </div>
       </div>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
           <div class="flex items-center justify-start flex-1">
-            <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
+            <v-add-button class="mr-[20px]" link="/admin/cities/add" type="link"/>
             <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
             <v-search/>
           </div>
@@ -25,9 +34,9 @@
             </div>
           </div>
         </div>
-        <v-table :list="countries.list" :sortTable="sortCountry" address="countries" :type="countries" @routeDetail="nextToDetail" @sortAction="sortWork" inst="country"/>
+        <v-table :list="cities.list" :sortTable="sortCity" address="cities" :type="cities" @routeDetail="nextToDetail" @sortAction="sortWork"/>
         <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
-          <div class="text-14sm text-grey-500">Всего записей: {{ countries.total }}</div>
+          <div class="text-14sm text-grey-500">Всего записей: {{ cities.total }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
@@ -54,38 +63,46 @@
 </template>
 
 <script>
-  import { sortCountry } from '@/data/sort.js'
+  import vTable from '@/components/content/v-table.vue'
+  import VSearch from '@/components/shared/v-search.vue';
+  import vAddButton from '@/components/button/v-add-button.vue';
+  import vDeleteButton from '@/components/button/v-delete-button.vue';
+  import vTitle from '@/components/content/v-title.vue';
+  import vSelect from '@/components/shared/v-select.vue';
+  import vFilter from '@/components/filter/v-filter.vue'
+  import { sortCity } from '@/data/sort.js'
 
   export default {
     components: {
-      vTable: () => import('@/components/content/v-table.vue'),
-      VSearch: () => import('@/components/shared/v-search.vue'),
-      vAddButton: () => import('@/components/button/v-add-button.vue'),
-      vDeleteButton: () => import('@/components/button/v-delete-button.vue'),
-      vTitle: () => import('@/components/content/v-title.vue'),
-      vSelect: () => import('@/components/shared/v-select.vue'),
-      vFilter: () => import('@/components/filter/v-filter.vue'),
-      vBtnSettings: () => import('@/components/button/btn-settings.vue')
+      vTable,
+      VSearch,
+      vAddButton,
+      vDeleteButton,
+      vTitle,
+      vSelect,
+      vFilter,
     },
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        sortCountry,
+        sortCity,
         currentPage: Number(this.$route.params.page) || 1
       }
     },
     mounted() {
-      this.$store.dispatch('actionCountries', { page: this.$route.params.page })
+      this.$store.dispatch('actionCities', {
+        page: this.$route.params.page
+      })
     },
     computed: {
-      countries() {
-        return this.$store.state.country.countries
+      cities() {
+        return this.$store.state.cities.cities
       },
       totalPage() {
-        return this.countries.pages
+        return this.cities.pages
       },
       activeDeleteItem() {
-        return this.$store.state.country.deleteArray
+        return this.$store.state.cities.deleteArray
       }
     },
     methods: {
@@ -93,10 +110,10 @@
         this.$store.commit('openPopup', 'filter')
       },
       nextToDetail(item) {
-        this.$store.commit('setCountryDetail', item);
+        this.$store.commit('setCitiesDetail', item);
       },
       sortWork(data, dir) {
-        this.$store.dispatch('actionCountries', {
+        this.$store.dispatch('actionCities', {
         page: this.$route.params.page,
         field: data.orderby,
         order: dir ? 'ASC' : 'DESC'
@@ -106,14 +123,14 @@
         this.selectLimit = newLimit; 
       },
       paginateCall(pageNum) {
-        this.fetchCountries(pageNum)
-        this.$router.push({ name: 'countries-page', params: {page: pageNum}, query: this.$route.query });
+        this.fetchCities(pageNum)
+        this.$router.push({ name: 'cities-page', params: {page: pageNum}, query: this.$route.query });
       },
-      fetchCountries(pageNum) {
-        this.$store.dispatch('actionCountries', { page: pageNum })
+      fetchCities(pageNum) {
+        this.$store.dispatch('actionCities', { page: pageNum })
       },
       async deleteSelectedItems() {
-        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})
+        await this.$store.dispatch('deleteCities', {ids: this.$store.state.cities.deleteArray})
         this.$notify({
           group: 'all',
           title: 'Объект успешно удален',

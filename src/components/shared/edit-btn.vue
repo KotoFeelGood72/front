@@ -1,21 +1,18 @@
 <template>
-  <div class="flex items-center justify-center cursor-pointer" @click="changeCountry">
+  <div class="flex items-center justify-center cursor-pointer" @click="changeTableItem">
       <global-icon icon="tabler:pencil-minus" width="23" height="23" color="#9CA3AF"/>
   </div>
 </template>
 
 <script>
   export default {
-    props: ['data'],
-    data() {
-      return {
-        good: '22'
-      }
-    },
+    props: ['data', 'link'],
     methods: {
-      changeCountry() {
-        this.$emit('change-countries', this.$props.data);
-        this.$router.push(`/admin/countries/edit/${this.$props.data.id}`)
+      changeTableItem() {
+        this.$emit('change-elements', this.$props.data);
+        if(this.$props.link) {
+          this.$router.push(`/admin/${this.$props.link}/edit/${this.$props.data.id}`)
+        }
       }
     }
   }

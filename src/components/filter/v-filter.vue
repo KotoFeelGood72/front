@@ -69,12 +69,12 @@
     },
     methods: {
       togglePopup() {
-        this.$store.commit('togglePopup')
+        this.$store.commit('openPopup', 'filter')
       }
     },
     computed: {
       isPopupOpen() {
-        return this.$store.getters.getPopupStatus
+        return this.$store.getters.getPopup('filter')
       }
     },
   }

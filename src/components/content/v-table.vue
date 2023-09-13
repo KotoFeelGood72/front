@@ -7,7 +7,7 @@
             <input type="checkbox" id="countries-0" @input="selectAllRows" :checked="checkItem">
             <label for="countries-0"></label>
           </th>
-          <th v-for="(item, i) in sortList.sortList" :key="'sort-item' + i">
+          <th v-for="(item, i) in sortTable" :key="'sort-item' + i">
             <v-sort-item
               :data=item
               @toggle-sortered="sortering"
@@ -16,75 +16,69 @@
         </tr>
       </thead>
       <tbody>
-        <template>
-            <tr v-for="item in list" :key="item.id" class="py-[11px] relative  border-b border-grey-200">
-              <th class="relative check-row w-[20px] min-w-[51px]">
-                <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem" @input="checkedRow(item)">
-                <label :for="'countries-' + item.id"></label>
-              </th>
-              <th>
-                <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal max-w-md w-[100%]">
-                  <p>{{ item.code }}</p>
-                </div>
-              </th>
-              <th>
-                <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal max-w-md w-[100%]">
-                  <p class=" text-left">{{ item.name }}</p>
-                </div>
-              </th>
-              <th>
-                <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal max-w-md w-[100%]">
-                  <v-status v-if="item" :status="item.active ? item.active : 0" @changeStatus="submitCountry(item)" />
-                </div>
-              </th>
-              <th class="edit-trigger absolute top-[50%]  right-0 -translate-y-[50%]">
-                <edit-btn :data="item" @change-countries="getCountry(item)"/>
-              </th>
-            </tr>
-        </template>
+        <tr v-for="item in list" :key="item.id" class="py-[11px] relative  border-b border-grey-200">
+          <td class="relative check-row w-[20px] min-w-[51px]">
+            <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem" @input="checkedRow(item)">
+            <label :for="'countries-' + item.id"></label>
+          </td>
+          <v-table-item v-for="(field, i) in filteredItemFields(item)" :key="'field-' + i" :title="field"/>
+          <td>
+            <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal max-w-md w-[100%]">
+              <v-status v-if="item" :status="item.active ? item.active : 0" @changeStatus="shortChange(item)" />
+            </div>
+          </td>
+          <td class="edit-trigger absolute top-[50%]  right-0 -translate-y-[50%]">
+            <edit-btn :data="item" link="cities" @change-elements="getElements(item)"/>
+          </td>
+        </tr>
       </tbody>
-
     </table>
   </div>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 import VStatus from '@/components/label/v-status.vue';
-import vSortItem from './v-sort-item.vue';
-import editBtn from '../shared/edit-btn.vue';
+import vSortItem from '@/components/content/v-sort-item.vue';
+import editBtn from '@/components/shared/edit-btn.vue';
+import vTableItem from './v-table-item.vue';
 
 
 
-import sortList from '@/data/sort.js'
 import axios from 'axios';
 
 export default {
-  components: {
-    VStatus,
-    vSortItem,
-    editBtn
-  },
-  props: ['list'],
+  components: { VStatus, vSortItem, editBtn, vTableItem },
+  props: ['list', 'sortTable', 'address', 'type'],
   data() {
     return {
-      sortList,
       checkItem: false,
-      selectedItems: []
+      selectedItems: [],
     }
   },
   computed: {
-    countries() {
-      return this.$store.state.country.countries
-    }
+    filteredItemFields() {
+      return function (item) {
+        // Определите, какие свойства вам нужны
+        const filteredFields = {
+          countryCode: item.country && item.country.code,
+          country: item.country && item.country.name,
+          code: item.code,
+          region: item.region && item.region.name,
+          name: item.name,
+          // Добавьте другие свойства, которые вам нужны
+        };
+        // Возвращаем массив значений свойств
+        return Object.values(filteredFields);
+      };
+    },
   },
   methods: {
-    getCountry(item) {
-      this.$store.commit('setCountryDetail', item)
+    getElements(item) {
+      this.$emit('routeDetail', item)
     },
     selectAllRows() {
       this.checkItem = !this.checkItem;
-      for (const item of this.countries.list) {
+      for (const item of this.$props.type) {
         item.checked = this.checkItem;
       }
       this.updateSelectedItems();
@@ -94,11 +88,11 @@ export default {
       this.updateSelectedItems();
     },
     updateSelectedItems() {
-      this.selectedItems = this.countries.list.filter(item => item.checked).map(item => item.id);
-      this.checkItem = this.selectedItems.length === this.countries.list.length;
+      this.selectedItems = this.$props.type.list.filter(item => item.checked).map(item => item.id);
+      this.checkItem = this.selectedItems.length === this.$props.type.length;
       this.$store.commit('setDeleteArr', this.selectedItems)
     },
-    async submitCountry(item) {
+    async shortChange(item) {
       const data = {
         id: item.id,
         active: item.active === 1 ? 0 : 1,
@@ -106,7 +100,7 @@ export default {
         name: item.name,
       }
       try {
-        await axios.post('admin/countries/edit', data)
+        await axios.post(`admin/${this.$props.address}/edit`, data)
         if(item) {
           item.active = item.active === 1 ? 0 : 1;
         }
@@ -114,15 +108,8 @@ export default {
         console.error(error);
       }
     },
-    ...mapActions(['actionCountries']),
-
     sortering(data, dir) {
-      console.log(data, dir)
-      this.$store.dispatch('actionCountries', {
-        page: this.$route.params.page,
-        field: data.orderby,
-        order: dir ? 'ASC' : 'DESC'
-      });
+      this.$emit('sortAction', data, dir )
     }    
   },
 };

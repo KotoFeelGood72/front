@@ -6,8 +6,8 @@ export default {
       isActive: false,
       submenu: [
         { name: 'Страна', link: '/admin/countries/page/1'},
-        { name: 'Регион', link: '/region'},
-        { name: 'Город', link: '/city'},
+        { name: 'Регион', link: '/admin/regions/page/1'},
+        { name: 'Город', link: '/admin/cities/page/1'},
       ]
     },
     {

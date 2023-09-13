@@ -23,9 +23,7 @@ export default {
     isAscending: null,
   }),
   methods: {
-    toggleSortered(e) {
-      e.preventDefault();
-      
+    toggleSortered() {
       this.isAscending = !this.isAscending;
       this.isAscending ? 'ASC' : 'DESC'
       this.$emit('toggle-sortered', this.$props.data, this.isAscending)
@@ -36,14 +34,6 @@ export default {
 
 <style lang="scss">
 
-
-.sort-item {
-  // &.DESC, &.ASC {
-  //   svg {
-  //     color: #4F46E5!important;
-  //   }
-  // }
-}
 
 
 
