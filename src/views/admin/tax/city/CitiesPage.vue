@@ -2,17 +2,8 @@
   <section class="w-full">
     <div class="container">
       <div class="module-head flex items-center justify-between mb-[40px]">
-        <v-title title="Город"/>
-        <div class="flex items-center">
-          <button type="button" class="flex items-center mr-[30px]">
-            <global-icon icon="tabler:arrow-forward-up" width="20" height="20" color="#374151" class="mr-[8px]"/>
-            <p>По умолчанию</p>
-          </button>
-          <button type="button" class="flex items-center">
-            <global-icon icon="tabler:device-floppy" width="20" height="20" color="#374151" class="mr-[8px]"/>
-            <p>Сохранить</p>
-          </button>
-        </div>
+        <v-title title="Регионы"/>
+        <v-btn-settings/>
       </div>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
@@ -34,7 +25,7 @@
             </div>
           </div>
         </div>
-        <v-table :list="cities.list" :sortTable="sortCity" address="cities" :type="cities" @routeDetail="nextToDetail" @sortAction="sortWork"/>
+        <v-table :list="cities.list" :sortTable="sortCities" address="cities" :type="cities" @routeDetail="nextToDetail" @sortAction="sortWork"/>
         <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
           <div class="text-14sm text-grey-500">Всего записей: {{ cities.total }}</div>
           <div class="col-row-settings flex items-center">
@@ -63,36 +54,28 @@
 </template>
 
 <script>
-  import vTable from '@/components/content/v-table.vue'
-  import VSearch from '@/components/shared/v-search.vue';
-  import vAddButton from '@/components/button/v-add-button.vue';
-  import vDeleteButton from '@/components/button/v-delete-button.vue';
-  import vTitle from '@/components/content/v-title.vue';
-  import vSelect from '@/components/shared/v-select.vue';
-  import vFilter from '@/components/filter/v-filter.vue'
-  import { sortCity } from '@/data/sort.js'
+  import { sortCities } from '@/data/sort.js'
 
   export default {
     components: {
-      vTable,
-      VSearch,
-      vAddButton,
-      vDeleteButton,
-      vTitle,
-      vSelect,
-      vFilter,
+      vTable: () => import('@/components/content/v-table.vue'),
+      VSearch: () => import('@/components/shared/v-search.vue'),
+      vAddButton: () => import('@/components/button/v-add-button.vue'),
+      vDeleteButton: () => import('@/components/button/v-delete-button.vue'),
+      vTitle: () => import('@/components/content/v-title.vue'),
+      vSelect: () => import('@/components/shared/v-select.vue'),
+      vFilter: () => import('@/components/filter/v-filter.vue'),
+      vBtnSettings: () => import('@/components/button/btn-settings.vue')
     },
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        sortCity,
+        sortCities,
         currentPage: Number(this.$route.params.page) || 1
       }
     },
     mounted() {
-      this.$store.dispatch('actionCities', {
-        page: this.$route.params.page
-      })
+      this.$store.dispatch('actionCities', { page: this.$route.params.page })
     },
     computed: {
       cities() {
@@ -118,6 +101,7 @@
         field: data.orderby,
         order: dir ? 'ASC' : 'DESC'
       });
+      console.log(dir)
       },
       updatePagination(newLimit) {
         this.selectLimit = newLimit; 

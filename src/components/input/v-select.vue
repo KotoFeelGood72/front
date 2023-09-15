@@ -9,12 +9,13 @@
 
 <script>
   export default {
+    props: ['name'],
     data() {
       return {
         option: [
           { active: 1, name: 'Активно' },
           { active: 0, name: 'Неактивно'}
-        ]
+        ],
       }
     },
     methods: {
@@ -24,7 +25,7 @@
     },
     computed: {
       getStatus() {
-        return this.$store.state.country.countryDetail
+        return this.$store.state[this.name].pageDetail
       }
     }
   }

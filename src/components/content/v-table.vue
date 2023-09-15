@@ -28,7 +28,7 @@
             </div>
           </td>
           <td class="edit-trigger absolute top-[50%]  right-0 -translate-y-[50%]">
-            <edit-btn :data="item" link="cities" @change-elements="getElements(item)"/>
+            <edit-btn :data="item" :link="address" @change-elements="getElements(item)"/>
           </td>
         </tr>
       </tbody>
@@ -58,14 +58,12 @@ export default {
   computed: {
     filteredItemFields() {
       return function (item) {
-        // Определите, какие свойства вам нужны
         const filteredFields = {
           countryCode: item.country && item.country.code,
           country: item.country && item.country.name,
           code: item.code,
           region: item.region && item.region.name,
           name: item.name,
-          // Добавьте другие свойства, которые вам нужны
         };
         // Возвращаем массив значений свойств
         return Object.values(filteredFields);
@@ -75,6 +73,7 @@ export default {
   methods: {
     getElements(item) {
       this.$emit('routeDetail', item)
+      console.log(item)
     },
     selectAllRows() {
       this.checkItem = !this.checkItem;

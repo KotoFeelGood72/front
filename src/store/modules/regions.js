@@ -4,7 +4,7 @@ export default {
     regions: [],
     page: 1,
     activePage: 1,
-    regionsDetail: {},
+    pageDetail: {},
     status: Number,
     deleteArray: [],
     filters: {
@@ -29,13 +29,15 @@ export default {
         }
           const response = await axios.get(`admin/regions/page/${page}`, { params });
           const { data } = response.data;
+
+          // console.log(response.data)
           commit('setRegions', data);
       } catch (error) {
         console.error(error);
       }
     },
 
-    async deleteRegions({ commit, dispatch }, ids) {
+    async deleteCountries({ commit, dispatch }, ids) {
       try {
         await axios.post('admin/regions/delete/', ids);
         commit('REMOVE_DELETED_ITEMS', ids);
@@ -75,8 +77,8 @@ export default {
     },
 
 
-    setRegionsDetail(state, data) {
-      state.regionsDetail = data;
+    setRegionsDetail(state, regions) {
+      state.pageDetail = regions;
     },
 
     setChangeStatus(state, status) {

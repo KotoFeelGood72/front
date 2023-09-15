@@ -106,11 +106,11 @@
         this.selectLimit = newLimit; 
       },
       paginateCall(pageNum) {
-        this.fetchCountries(pageNum)
+        this.fetchPage(pageNum)
         this.$router.push({ name: 'countries-page', params: {page: pageNum}, query: this.$route.query });
       },
-      fetchCountries(pageNum) {
-        this.$store.dispatch('actionCountries', { page: pageNum })
+      fetchPage(pageNum) {
+        this.$store.dispatch(`actionCountries`, { page: pageNum })
       },
       async deleteSelectedItems() {
         await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})

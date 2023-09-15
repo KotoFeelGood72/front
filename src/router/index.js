@@ -42,12 +42,20 @@ function isAuthenticated() {
 
 router.beforeEach((to, from, next) => {
   const requireAuth = to.matched.some(record => record.meta.auth)
-  // console.log(isAuthenticated())
+  const token = store.getters.getAccessToken;
+
   if (requireAuth && !isAuthenticated()) {
-    next('/')
+    next('/');
+  } else if (requireAuth && !token) {
+    next('/');
   } else {
-    next()
     store.dispatch('refreshTokens')
+      .then(() => {
+        next();
+      })
+      .catch(() => {
+        next('/');
+      });
   }
 })
 

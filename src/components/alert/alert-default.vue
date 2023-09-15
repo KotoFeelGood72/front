@@ -15,7 +15,7 @@
   export default {
     methods: {
       removeDetails() {
-        this.$emit('remove-country')
+        this.$emit('remove-pages')
       },
       hiddenAlert() {
         this.$emit('hidden-alert')

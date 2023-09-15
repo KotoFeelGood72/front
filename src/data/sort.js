@@ -17,7 +17,7 @@ export const sortCountry = [
   },
 ];
 
-export const sortCity = [
+export const sortCities = [
   {
     name: 'Код страны',
     orderby: 'code',

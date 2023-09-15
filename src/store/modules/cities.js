@@ -4,7 +4,7 @@ export default {
     cities: [],
     page: 1,
     activePage: 1,
-    citiesDetail: {},
+    pageDetail: {},
     status: Number,
     deleteArray: [],
     filters: {
@@ -29,6 +29,8 @@ export default {
         }
           const response = await axios.get(`admin/cities/page/${page}`, { params });
           const { data } = response.data;
+
+          // console.log(response.data)
           commit('setCities', data);
       } catch (error) {
         console.error(error);
@@ -75,8 +77,8 @@ export default {
     },
 
 
-    setCitiesDetail(state, data) {
-      state.citiesDetail = data;
+    setCitiesDetail(state, cities) {
+      state.pageDetail = cities;
     },
 
     setChangeStatus(state, status) {

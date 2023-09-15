@@ -4,7 +4,7 @@ export default {
     countries: [],
     page: 1,
     activePage: 1,
-    countryDetail: {},
+    pageDetail: {},
     status: Number,
     deleteArray: [],
     filters: {
@@ -78,7 +78,7 @@ export default {
 
 
     setCountryDetail(state, country) {
-      state.countryDetail = country;
+      state.pageDetail = country;
     },
 
     setChangeStatus(state, status) {

@@ -4,13 +4,13 @@
       <v-title title="Добавить страну" class="mb-[40px]"/>
       <div class="country-row flex items-start">
         <div class="country_input--group shadow-lg rounded-[15px] flex-1 p-[40px] flex items-center bg-white mr-[25px]">
-          <label for="countryCode">
+          <label :for="moduleName + 'Code'">
             <p class="mb-[10px] font-medium text-grey-700">Код страны</p>
-            <input type="text" id="countryCode" placeholder="Пример: RU" v-model="code">
+            <input type="text" :id="moduleName + 'Code'" placeholder="Пример: RU" v-model="instance.code">
           </label>
-          <label for="countryName">
+          <label :for="moduleName + 'Name'">
             <p class="mb-[10px] font-medium text-grey-700">Название страны</p>
-            <input type="text" id="countryName" placeholder="Название страны заполненное" v-model="name">
+            <input type="text" :id="moduleName + 'Code'"  placeholder="Название страны заполненное" v-model="instance.name">
           </label>
         </div>
         <div class="country-add min-w-[331px] bg-white shadow-lg p-[30px] rounded-[15px]">
@@ -25,7 +25,7 @@
             </li>
           </ul>
           <div class="country-save">
-            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" @click="addCountry">
+            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" @click="addPage">
               <global-icon icon="tabler:plus" width="20" height="20" class="mr-[8px]"/>
               <p>Добавить</p>
             </button>
@@ -40,23 +40,26 @@
   import axios from 'axios'
   export default {
     components: {
-      vTitle: () => import('@/components/content/v-title.vue')
+      vTitle: () => import('@/components/content/v-title.vue'),
     },
     data() {
       return {
-        name: '',
-        code: ''
+        moduleName: 'countries',
+        instance: {
+          name: '',
+          code: ''
+        }
       }
     },
     methods: {
-      async addCountry() {
+      async addPage() {
         const data = {
-          name: this.name,
-          code: this.code
+          name: this.instance.name,
+          code: this.instance.code
         }
         try {
-          await axios.post('admin/countries/add', data)
-          await this.$router.push('/admin/countries')
+          await axios.post(`admin/${this.moduleName}/add`, data)
+          await this.$router.push(`/admin/${this.moduleName}`)
           setTimeout(() => {
             this.$notify({
               group: 'all',

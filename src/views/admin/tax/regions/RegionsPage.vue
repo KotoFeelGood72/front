@@ -8,7 +8,7 @@
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
           <div class="flex items-center justify-start flex-1">
-            <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
+            <v-add-button class="mr-[20px]" link="/admin/regions/add" type="link"/>
             <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
             <v-search/>
           </div>
@@ -101,6 +101,7 @@
         field: data.orderby,
         order: dir ? 'ASC' : 'DESC'
       });
+      console.log(dir)
       },
       updatePagination(newLimit) {
         this.selectLimit = newLimit; 
@@ -113,7 +114,7 @@
         this.$store.dispatch('actionRegions', { page: pageNum })
       },
       async deleteSelectedItems() {
-        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.regions.deleteArray})
+        await this.$store.dispatch('deleteRegions', {ids: this.$store.state.regions.deleteArray})
         this.$notify({
           group: 'all',
           title: 'Объект успешно удален',

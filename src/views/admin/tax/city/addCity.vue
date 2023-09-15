@@ -1,16 +1,22 @@
 <template>
   <section class="w-full">
     <div class="container">
-      <v-title title="Добавить страну" class="mb-[40px]"/>
+      <v-title title="Добавить город" class="mb-[40px]"/>
       <div class="country-row flex items-start">
         <div class="country_input--group shadow-lg rounded-[15px] flex-1 p-[40px] flex items-center bg-white mr-[25px]">
-          <label for="countryCode">
-            <p class="mb-[10px] font-medium text-grey-700">Код страны</p>
-            <input type="text" id="countryCode" placeholder="Пример: RU" v-model="code">
+          <label for="country-select">
+            <p class="mb-[10px] font-medium text-grey-700">Регион</p>
+            <div class="relative">
+              <select name="country-select" id="country-select" v-model="instance.region" class="w-full py-[8px] px-[10px] h-full rounded-[8px] border border-grey-300 focus:border-indigo-600">
+                <option value="" disabled selected>Выберите из списка</option>
+                <option v-for="(region, i) in regions" :key="'region' + i" :value="region.id">{{ region.name }}</option>
+              </select>
+              <global-icon icon="tabler:chevron-down" width="20" height="20" color="#6B7280" class="select-icon"/>
+            </div>
           </label>
-          <label for="countryName">
-            <p class="mb-[10px] font-medium text-grey-700">Название страны</p>
-            <input type="text" id="countryName" placeholder="Название страны заполненное" v-model="name">
+          <label :for="moduleName + 'Name'">
+            <p class="mb-[10px] font-medium text-grey-700">Город</p>
+            <input type="text" :id="moduleName + 'Regions'"  placeholder="Введите название" v-model="instance.name">
           </label>
         </div>
         <div class="country-add min-w-[331px] bg-white shadow-lg p-[30px] rounded-[15px]">
@@ -25,7 +31,7 @@
             </li>
           </ul>
           <div class="country-save">
-            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" @click="addCities">
+            <button type="button" class="flex items-center justify-center bg-indigo-600 text-white py-[13px] px-[16px] rounded-default w-full" @click="addPage">
               <global-icon icon="tabler:plus" width="20" height="20" class="mr-[8px]"/>
               <p>Добавить</p>
             </button>
@@ -40,23 +46,33 @@
   import axios from 'axios'
   export default {
     components: {
-      vTitle: () => import('@/components/content/v-title.vue')
+      vTitle: () => import('@/components/content/v-title.vue'),
     },
     data() {
       return {
-        name: '',
-        code: ''
+        moduleName: 'regions',
+        instance: {
+          region: '',
+          name: ''
+        },
+        regions: [
+          { name: 'Россия', id: '1'   },
+          { name: 'Франция', id: '2'  },
+          { name: 'Америка', id: '3'  },
+          { name: 'ЮАР', id: '4'      },
+          { name: 'Австралия', id: '5'},
+        ]
       }
     },
     methods: {
-      async addCities() {
+      async addPage() {
         const data = {
-          name: this.name,
-          code: this.code
+          name: this.instance.name,
+          regionId: this.instance.region,
         }
         try {
-          await axios.post('admin/cities/add', data)
-          await this.$router.push('/admin/cities')
+          await axios.post(`admin/${this.moduleName}/add`, data)
+          await this.$router.push(`/admin/${this.moduleName}`)
           setTimeout(() => {
             this.$notify({
               group: 'all',
@@ -75,7 +91,7 @@
 
 <style lang="scss" scoped>
 
-input {
+input, select {
   border-radius: 8px;
   border: 1px solid var(--grey-300, #D1D5DB);
   background: var(--indigo-10, #FAFBFF);
@@ -96,5 +112,27 @@ input {
   grid-template-columns: repeat(auto-fill, minmax(45%, 1fr));
   grid-gap: 20px;
 }
+
+
+
+
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+  &:focus {
+    outline: none;
+  }
+}
+
+.select-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+}
+
 
 </style>
