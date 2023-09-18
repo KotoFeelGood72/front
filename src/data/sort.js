@@ -67,3 +67,36 @@ export const sortRegions = [
     settings: false,
   },
 ];
+
+export const sortKinder = [
+  {
+    name: 'Название',
+    orderby: 'code',
+    settings: true,
+  },
+  {
+    name: 'Город',
+    orderby: 'code',
+    settings: true,
+  },
+  {
+    name: 'Адрес',
+    orderby: 'name',
+    settings: true,
+  },
+  {
+    name: 'Заведующий',
+    orderby: 'name',
+    settings: true,
+  },
+  {
+    name: 'Менеджер',
+    orderby: 'name',
+    settings: true,
+  },
+  {
+    name: 'Видимость',
+    orderby: 'active',
+    settings: false,
+  },
+];

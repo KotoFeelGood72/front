@@ -3,9 +3,9 @@
     <input 
     type="checkbox" 
     :name="data.name" 
-    :id="data.id"
+    :id="data.orderby"
     >
-    <label :for="data.id" class="text-14sm text-grey-700">{{ data.label }}</label>
+    <label :for="data.orderby" class="text-14sm text-grey-700">{{ data.name }}</label>
   </div>
 </template>
 

@@ -8,6 +8,7 @@ import store from '@/store';
 import countriesRoutes from "./countries";
 import regionsRoutes from "./regions";
 import citiesRoutes from "./cities";
+import kinderRoutes from "./kinder";
 import defaultRoutes from './default'
 
 import VDashboard from "@/views/admin/pages/v-dashboard.vue";
@@ -22,6 +23,7 @@ const routes = [
   ...regionsRoutes,
   ...defaultRoutes,
   ...citiesRoutes,
+  ...kinderRoutes,
   {
     path: '/admin/',
     component: VDashboard,

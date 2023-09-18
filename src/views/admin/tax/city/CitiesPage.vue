@@ -25,7 +25,7 @@
             </div>
           </div>
         </div>
-        <v-table :list="cities.list" :sortTable="sortCities" address="cities" :type="cities" @routeDetail="nextToDetail" @sortAction="sortWork"/>
+        <v-table :list="cities.list" :sortTable="sortCities" address="cities" :type="cities" @routeDetail="nextToDetail" @sortAction="sortWork" :fieldOrder="fieldOrderingModule"/>
         <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
           <div class="text-14sm text-grey-500">Всего записей: {{ cities.total }}</div>
           <div class="col-row-settings flex items-center">
@@ -71,7 +71,8 @@
       return {
         select: [10, 20, 30, 40, 50],
         sortCities,
-        currentPage: Number(this.$route.params.page) || 1
+        currentPage: Number(this.$route.params.page) || 1,
+        fieldOrderingModule: ['countryCode', 'country', 'region', 'name']
       }
     },
     mounted() {

@@ -5,6 +5,7 @@ export default {
       user: false,
       note: false,
       filter: false,
+      visibles: false,
     }
   },
   mutations: {

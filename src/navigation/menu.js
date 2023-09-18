@@ -1,3 +1,4 @@
+
 export default {
   menu: [
     {
@@ -29,7 +30,7 @@ export default {
     },
     {
       name: 'Детские сады',
-      link: '/geo',
+      link: '/admin/kindergartens/page/1',
       icon: 'tabler:mood-boy',
       isActive: false,
     },

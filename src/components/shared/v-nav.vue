@@ -1,14 +1,19 @@
 <template>
   <nav class="navigation-menu">
     <div class="label-menu text-grey mb-[15px] text-14sm pl-[20px]">МЕНЮ</div>
-    <ul class=" border-b-[1px] border-[#374151] pb-[10px] mb-[10px]">
+    <ul class=" border-b-[1px] border-[#374151] pb-[10px] mb-[10px] sidebar-nav">
       <li v-for="(item, i) in nav.menu" :key="'nav-' + i" :class="{'mb-[10px]': item.isActive}">
-        <a href="" class="flex rounded-default relative" @click.prevent="changeStateNavItem(item)" :class="{'bg-indigo-900': item.isActive}">
+        <a href="" class="flex rounded-default relative" @click.prevent="changeStateNavItem(item)" :class="{'bg-indigo-900': item.isActive}" v-if="item.submenu">
           <global-icon :icon="item.icon" width="20px" class="mr-[10px]"/>
           <p>{{ item.name }}</p>
           <global-icon v-if="item.submenu"  icon="tabler:chevron-up" width="20px" class="menu-arrow" :class="{active: item.isActive}"/>
         </a>
-          <ul v-if="item.submenu && item.isActive" class="sub-menu"  :class="{'active': !item.isActive}">
+        <router-link :to="item.link" class="flex rounded-default relative" :class="{'bg-indigo-900': item.isActive}" exact v-else>
+          <global-icon :icon="item.icon" width="20px" class="mr-[10px]"/>
+          <p>{{ item.name }}</p>
+          <global-icon v-if="item.submenu"  icon="tabler:chevron-up" width="20px" class="menu-arrow" :class="{active: item.isActive}"/>
+        </router-link>
+          <ul v-if="item.submenu && item.isActive" class="sub-menu">
             <li v-for="(item, i) in item.submenu" :key="'sub-nav-' + i">
               <router-link class="text-grey hover:text-white flex" :to="item.link">{{ item.name }}</router-link>
             </li>
@@ -122,8 +127,15 @@
   }
 }
 
-
-.router-link-exact-active {
-  color: white;
+.sidebar-nav {
+  &>li {
+    &>.router-link-exact-active {
+      color: white;
+      background-color: rgb(49 46 129);
+    }
+    .router-link-exact-active {
+      color: white;
+    }
+  }
 }
 </style>

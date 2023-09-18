@@ -48,7 +48,7 @@ import axios from 'axios';
 
 export default {
   components: { VStatus, vSortItem, editBtn, vTableItem },
-  props: ['list', 'sortTable', 'address', 'type'],
+  props: ['list', 'sortTable', 'address', 'type', 'fieldOrder'],
   data() {
     return {
       checkItem: false,
@@ -64,9 +64,16 @@ export default {
           code: item.code,
           region: item.region && item.region.name,
           name: item.name,
+          city: item.city && item.city.name,
+          address: item.address,
+          director: item.director,
+          manager: item.manager,
         };
         // Возвращаем массив значений свойств
-        return Object.values(filteredFields);
+        const desiredOrder = this.$props.fieldOrder
+
+      // Возвращаем массив значений свойств в указанном порядке
+        return desiredOrder.map(key => filteredFields[key]);
       };
     },
   },

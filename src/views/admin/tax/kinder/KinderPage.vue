@@ -2,13 +2,13 @@
   <section class="w-full">
     <div class="container">
       <div class="module-head flex items-center justify-between mb-[40px]">
-        <v-title title="Страна"/>
+        <v-title title="Детский сад"/>
         <v-btn-settings/>
       </div>
       <div class="module-main w-full shadow rounded-[15px] border border-gray-200 p-[40px] bg-white">
         <div class="module-head flex justify-between mb-[29px]">
           <div class="flex items-center justify-start flex-1">
-            <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
+            <v-add-button class="mr-[20px]" link="/admin/kindergartens/add" type="link"/>
             <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
             <v-search/>
           </div>
@@ -25,9 +25,9 @@
             </div>
           </div>
         </div>
-        <v-table :list="countries.list" :sortTable="sortCountry" address="countries" :type="countries" @routeDetail="nextToDetail" @sortAction="sortWork" inst="country" :fieldOrder="fieldOrderingModule"/>
+        <v-table :list="kinder.list" :sortTable="sortKinder" address="kindergartens" :type="kinder" @routeDetail="nextToDetail" @sortAction="sortWork" :fieldOrder="fieldOrderingModule"/>
         <div class="module-bottom flex items-center justify-between py-[9.5px] mt-[30px]">
-          <div class="text-14sm text-grey-500">Всего записей: {{ countries.total }}</div>
+          <div class="text-14sm text-grey-500">Всего записей: {{ kinder.total }}</div>
           <div class="col-row-settings flex items-center">
             <div class="text-grey-500 text-14sm mr-[10px]">Полей на странице</div>
             <div class="col-row-select mr-[25px]">
@@ -49,12 +49,12 @@
         </div>
       </div>
     </div>
-    <v-visible :visibleField="sortCountry"/>
+    <v-filter />
   </section>
 </template>
 
 <script>
-  import { sortCountry } from '@/data/sort.js'
+  import { sortKinder } from '@/data/sort.js'
 
   export default {
     components: {
@@ -64,57 +64,58 @@
       vDeleteButton: () => import('@/components/button/v-delete-button.vue'),
       vTitle: () => import('@/components/content/v-title.vue'),
       vSelect: () => import('@/components/shared/v-select.vue'),
-      vBtnSettings: () => import('@/components/button/btn-settings.vue'),
-      vVisible: () => import('@/components/filter/v-visible.vue'),
+      vFilter: () => import('@/components/filter/v-filter.vue'),
+      vBtnSettings: () => import('@/components/button/btn-settings.vue')
     },
     data() {
       return {
         select: [10, 20, 30, 40, 50],
-        sortCountry,
+        sortKinder,
         currentPage: Number(this.$route.params.page) || 1,
-        fieldOrderingModule: ['code', 'name']
+        fieldOrderingModule: ['name', 'city', 'address', 'director', 'manager']
       }
     },
     mounted() {
-      this.$store.dispatch('actionCountries', { page: this.$route.params.page })
+      this.$store.dispatch('actionKinder', { page: this.$route.params.page })
     },
     computed: {
-      countries() {
-        return this.$store.state.country.countries
+      kinder() {
+        return this.$store.state.kinder.kinder
       },
       totalPage() {
-        return this.countries.pages
+        return this.kinder.pages
       },
       activeDeleteItem() {
-        return this.$store.state.country.deleteArray
+        return this.$store.state.kinder.deleteArray
       }
     },
     methods: {
       openPopup() {
-        this.$store.commit('openPopup', 'visibles')
+        this.$store.commit('openPopup', 'filter')
       },
       nextToDetail(item) {
-        this.$store.commit('setCountryDetail', item);
+        this.$store.commit('setKinderDetail', item);
       },
       sortWork(data, dir) {
-        this.$store.dispatch('actionCountries', {
+        this.$store.dispatch('actionsKinder', {
         page: this.$route.params.page,
         field: data.orderby,
         order: dir ? 'ASC' : 'DESC'
       });
+      console.log(dir)
       },
       updatePagination(newLimit) {
         this.selectLimit = newLimit; 
       },
       paginateCall(pageNum) {
-        this.fetchPage(pageNum)
-        this.$router.push({ name: 'countries-page', params: {page: pageNum}, query: this.$route.query });
+        this.fetchKinder(pageNum)
+        this.$router.push({ name: 'kinder-page', params: {page: pageNum}, query: this.$route.query });
       },
-      fetchPage(pageNum) {
-        this.$store.dispatch(`actionCountries`, { page: pageNum })
+      fetchKinder(pageNum) {
+        this.$store.dispatch('actionKinder', { page: pageNum })
       },
       async deleteSelectedItems() {
-        await this.$store.dispatch('deleteCountries', {ids: this.$store.state.country.deleteArray})
+        await this.$store.dispatch('deleteKinder', {ids: this.$store.state.kinder.deleteArray})
         this.$notify({
           group: 'all',
           title: 'Объект успешно удален',
