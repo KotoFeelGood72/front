@@ -43,13 +43,20 @@ function isAuthenticated() {
 }
 
 router.beforeEach((to, from, next) => {
+  const AccessToken = localStorage.getItem('id_token')
+
+  console.log(AccessToken, 'Текущий токен')
+  
   const requireAuth = to.matched.some(record => record.meta.auth)
+
   console.log(requireAuth)
-  if (requireAuth && !isAuthenticated()) {
-    next('/')
+
+  if (requireAuth && !isAuthenticated() && !AccessToken) {
+    next('/login')
   } else {
     store.dispatch('refreshTokens')
-    next()
+    next();
+    console.log(store.getters.getAccessToken, 'GETTERS')
   }
 })
 

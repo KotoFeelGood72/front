@@ -44,7 +44,10 @@ export default {
         localStorage.setItem('id_token', data.data.accessToken);
         const token = localStorage.getItem('id_token')
 
-        setAuthHeader(token)
+        if(token) {
+          setAuthHeader(token)
+        }
+
     
         router.push('/admin/').catch((err) => console.error(err));
       } catch (error) {
@@ -54,14 +57,15 @@ export default {
     
     
     async refreshTokens({ commit }) {
-      const refreshAccessToken = localStorage.getItem('id_token')
       try {
+        const refreshAccessToken = localStorage.getItem('id_token')
         const { data } = await axios.post('/refresh-tokens', {
           accessToken: refreshAccessToken,
         });
   
-
-        setAuthHeader(refreshAccessToken)
+        if(refreshAccessToken) {
+          setAuthHeader(refreshAccessToken)
+        }
         commit('SET_AUTH', data);
         commit('SET_AUTH_TOKEN', refreshAccessToken);
       } catch (error) {
