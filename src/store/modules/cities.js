@@ -29,8 +29,6 @@ export default {
         }
           const response = await axios.get(`admin/cities/page/${page}`, { params });
           const { data } = response.data;
-
-          // console.log(response.data)
           commit('setCities', data);
       } catch (error) {
         console.error(error);

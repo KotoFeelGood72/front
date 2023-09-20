@@ -3,8 +3,8 @@ import router from '@/router'
 import setAuthHeader from '@/utils/auth-service'
 export default {
   state: {
-    authenticated: false,
-    token: '',
+    authenticated: null,
+    token: localStorage.getItem('token') || '',
     user: {
       id: null,
       email: '',
@@ -34,11 +34,18 @@ export default {
     async actionsAuth({ commit }, formData) {
       try {
         const { data } = await axios.post('login/', formData);
+        
         commit('SET_AUTH', data);
+        
         commit('SET_AUTH_TOKEN', data.data.accessToken);
-        setAuthHeader(data.data.accessToken)
-    
+
         localStorage.setItem('auth', data.status);
+
+        localStorage.setItem('id_token', data.data.accessToken);
+        const token = localStorage.getItem('id_token')
+
+        setAuthHeader(token)
+    
         router.push('/admin/').catch((err) => console.error(err));
       } catch (error) {
         console.log(error);
@@ -46,15 +53,17 @@ export default {
     },
     
     
-    async refreshTokens({ commit, state }) {
+    async refreshTokens({ commit }) {
+      const refreshAccessToken = localStorage.getItem('id_token')
       try {
         const { data } = await axios.post('/refresh-tokens', {
-          accessToken: state.token,
+          accessToken: refreshAccessToken,
         });
-    
-        setAuthHeader(data.data.accessToken)
+  
+
+        setAuthHeader(refreshAccessToken)
         commit('SET_AUTH', data);
-        commit('SET_AUTH_TOKEN', data.data.accessToken);
+        commit('SET_AUTH_TOKEN', refreshAccessToken);
       } catch (error) {
         // Обработка ошибки обновления токена
         console.error(error);
@@ -69,6 +78,7 @@ export default {
       commit('SET_AUTH', false),
       commit('SET_AUTH_TOKEN', '');
       localStorage.removeItem('auth');
+      localStorage.removeItem('id_token');
       router.push('/login/').catch(err => console.error(err));
     }
   },

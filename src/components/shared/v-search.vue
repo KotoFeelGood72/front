@@ -16,6 +16,7 @@
 
 <script>
   export default {
+    props: ['type'],
     data() {
       return {
         isFocus: false,
@@ -40,12 +41,12 @@
       },
       clearSearch() {
         this.$store.dispatch('clearSearchQuery');
-        this.$store.dispatch('actionCountries', {page: this.$route.params.page});
+        this.$store.dispatch(`action${this.$props.type}`, {page: this.$route.params.page});
         this.searchQuery = ''
       },
       searchQuerys() {
           this.$store.commit('setSearchQuery', this.searchQuery);
-          this.$store.dispatch('actionCountries', {
+          this.$store.dispatch(`action${this.$props.type}`, {
             page: this.$route.params.page,
           })
       },

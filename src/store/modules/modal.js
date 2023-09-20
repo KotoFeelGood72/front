@@ -20,6 +20,9 @@ export default {
         }
         state.modal[modalName] = true;
       }
+    },
+    closePopup(state, modalName) {
+      state.modal[modalName] = false;
     }
   },
   getters: {

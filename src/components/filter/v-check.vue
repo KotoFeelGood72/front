@@ -1,22 +1,40 @@
 <template>
   <div class="global-check">
-    <input 
-    type="checkbox" 
-    :name="data.name" 
-    :id="data.orderby"
+    <input
+      v-if="data"
+      type="checkbox" 
+      :name="data.name" 
+      :id="data.orderby"
+      :checked="columnVisibility"
+      @change="toggleColumnVisible"
     >
     <label :for="data.orderby" class="text-14sm text-grey-700">{{ data.name }}</label>
   </div>
 </template>
 
 <script>
-  export default {
-    props: ['data']
+export default {
+  props: ['data'],
+  data() {
+    return {
+      nameField: this.$props.data.orderby
+    }
+  },
+  computed: {
+    columnVisibility() {
+      return this.$store.state.filter.columns[this.nameField]
+    }
+  },
+  methods: {
+    async toggleColumnVisible() {
+      // Изменяем значение через мутацию или действие
+      await this.$store.dispatch('toggleColumn', this.nameField)
+    }
   }
+}
 </script>
 
 <style lang="scss" scoped>
-
 .global-check {
   margin-bottom: 10px;
   input {

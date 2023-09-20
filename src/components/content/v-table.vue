@@ -7,12 +7,12 @@
             <input type="checkbox" id="countries-0" @input="selectAllRows" :checked="checkItem">
             <label for="countries-0"></label>
           </th>
-          <th v-for="(item, i) in sortTable" :key="'sort-item' + i">
-            <v-sort-item
-              :data=item
-              @toggle-sortered="sortering"
+          <template v-for="(item, i) in sortTable">
+            <v-sort-item :key="'sort-item' + i"
+                :data=item
+                @toggle-sortered="sortering"
             />
-          </th>
+          </template>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
             <input type="checkbox" :id="'countries-' + item.id" :checked="checkItem" @input="checkedRow(item)">
             <label :for="'countries-' + item.id"></label>
           </td>
-          <v-table-item v-for="(field, i) in filteredItemFields(item)" :key="'field-' + i" :title="field"/>
+          <v-table-item v-for="(field, i) in filteredItemFields(item)" :key="'field-' + i" :title="field" :sortTable="getOrderbyArray[i]"/>
           <td>
             <div class="flex justify-start items-center min-h-[46px] text-14sm text-grey-500 font-normal max-w-md w-[100%]">
               <v-status v-if="item" :status="item.active ? item.active : 0" @changeStatus="shortChange(item)" />
@@ -56,6 +56,9 @@ export default {
     }
   },
   computed: {
+    getOrderbyArray() {
+      return this.sortTable.map(item => item.orderby);
+    },
     filteredItemFields() {
       return function (item) {
         const filteredFields = {

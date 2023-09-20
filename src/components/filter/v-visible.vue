@@ -12,20 +12,15 @@
           <p>Сбросить</p>
         </button>
       </div>
-      <div class="filter-row pb-[20px] border-b border-grey-300 mb-[20px]">
-        <div class="filter-acc flex items-center justify-between relative cursor-pointer mb-[15px]">
+      <div class="filter-row pb-[20px] border-b border-grey-300 mb-[20px]" :class="{'pb-[0]': !fieldVisible}">
+        <div class="filter-acc flex items-center justify-between relative cursor-pointer mb-[15px]" @click="toggleGroupField">
           <p class="uppercase text-grey-400">поля</p>
-          <global-icon icon="tabler:chevron-down" width="20" height="24" color="#9CA3AF" class="arrow-acc"/>
+          <global-icon icon="tabler:chevron-down" width="20" height="24" color="#9CA3AF" class="arrow-acc" :class="{'active': !fieldVisible}"/>
         </div>
-        <v-check v-for="item in visibleField" :data="item" :key="item.id"/>
+        <div v-if="fieldVisible">
+          <v-check v-for="item in visibleField" :data="item" :key="item.id"/>
+        </div>
       </div>
-      <!-- <div class="filter-row">
-        <div class="filter-acc flex items-center justify-between relative cursor-pointer mb-[15px]">
-          <p class=" uppercase text-grey-400">видимость</p>
-          <global-icon icon="tabler:chevron-down" width="20" height="24" color="#9CA3AF" class="arrow-acc"/>
-        </div>
-        <v-check v-for="item in visibleField" :data="item" :key="item.id"/>
-      </div> -->
     </div>
   </div>
 </template>
@@ -35,49 +30,33 @@
   import vCheck from './v-check.vue';
   export default {
     props: ['visibleField'],
+    data() {
+      return {
+        fieldVisible: true,
+      }
+    },
     components: {
       vTitle,
       vCheck
     },
-    data() {
-      return {
-        countryFilter: {
-          column: [
-            {
-              label: 'Код страны',
-              id: 'isocode',
-              name: 'iso code'
-            },
-            {
-              label: 'Название страны',
-              id: 'nameCountry',
-              name: 'name country'
-            },
-            {
-              label: 'Видимость',
-              id: 'countryVisibility',
-              name: 'visibility country'
-            },
-          ],
-          visible: [
-            {
-              label: 'Активно',
-              id: 'filterActive',
-              name: 'filter active'
-            },
-            {
-              label: 'Неактивно',
-              id: 'filterNoActive',
-              name: 'filter no active'
-            },
-          ]
-        }
-      }
-    },
     methods: {
       togglePopup() {
         this.$store.commit('openPopup', 'visibles')
+      },
+      toggleGroupField() {
+        this.fieldVisible = !this.fieldVisible
+      },
+      closePopupOnOutsideClick(event) {
+        if (event.target.classList.contains('popup-background')) {
+          this.$store.commit('closePopup', 'visibles');
+        }
       }
+    },
+    mounted() {
+      document.addEventListener('click', this.closePopupOnOutsideClick);
+    },
+    beforeDestroy() {
+      document.removeEventListener('click', this.closePopupOnOutsideClick);
     },
     computed: {
       isPopupOpen() {
@@ -109,5 +88,9 @@
     top: 50%;
     transform: translateY(-50%);
     right: 0;
+
+    &.active {
+      transform: translateY(-50%) rotate(180deg);
+    }
   }
 </style>

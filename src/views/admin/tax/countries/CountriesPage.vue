@@ -10,7 +10,7 @@
           <div class="flex items-center justify-start flex-1">
             <v-add-button class="mr-[20px]" link="/admin/countries/add" type="link"/>
             <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
-            <v-search/>
+            <v-search type="Countries"/>
           </div>
           <div class="module-group flex justify-end">
             <div class="settings-btn mr-[20px]" @click="openPopup">

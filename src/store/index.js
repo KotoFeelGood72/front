@@ -9,6 +9,7 @@ import popup from './modules/popup'
 import auth from './modules/auth'
 import modal from './modules/modal'
 import alert from './modules/alert'
+import filter from './modules/filter'
 
 
 Vue.use(Vuex);
@@ -23,6 +24,7 @@ export default new Vuex.Store({
       popup,
       auth,
       modal,
-      alert
+      alert,
+      filter
     }
 })

@@ -14,6 +14,11 @@ Vue.component('GlobalIcon', GlobalIcon)
 Vue.component('VuePaginate', VuePaginate)
 
 
+// const accessToken = localStorage.getItem('auth')
+// if (accessToken) {
+//   store.commit('SET_AUTH_TOKEN', accessToken)
+// }
+
 new Vue({
   router,
   store,

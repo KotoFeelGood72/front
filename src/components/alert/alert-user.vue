@@ -40,5 +40,6 @@
   border-radius: 0 0 10px 10px;
   box-shadow: 0px 4px 10px 0px rgba(30, 27, 75, 0.10), 0px 1px 4px 0px rgba(30, 27, 75, 0.03);
   top: calc(100% + 9px);
+  
 }
 </style>

@@ -21,9 +21,9 @@ export default {
     clearSearchQuery({ commit }) {
       commit('CLEAR_SEARCH_QUERY_DATA');
     },
-    async updateSearchQuery({ commit }, query) {
+    async updateSearchQuery({ commit }, { query, type}) {
       try {
-        const response = await axios.get(`admin/countries/search/${query}`);
+        const response = await axios.get(`admin/${type}/search/${query}`);
         commit('setSearchQuery', response.data);
         // console.log(response.data);
       } catch (error) {

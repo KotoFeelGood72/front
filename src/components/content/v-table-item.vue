@@ -1,5 +1,5 @@
 <template>
-  <td>
+  <td v-if="columnTableVisibility">
     <div class="py-[10px]">
       <div v-if="title.email" class="flex justify-start items-center text-14sm text-grey-500 font-normal max-w-md w-[100%] pb-[2px]">{{ title.email }}</div>
       <div v-if="title.name" class="flex justify-start items-center text-[12px] text-grey-500 font-normal max-w-md w-[100%]">{{ title.name }}</div>
@@ -10,7 +10,17 @@
 
 <script>
   export default {
-    props: ['title']
+    props: ['title', 'sortTable'],
+    data() {
+      return {
+        fieldName: this.$props.sortTable
+      }
+    },
+    computed: {
+      columnTableVisibility() {
+            return this.$store.state.filter.columns[this.fieldName]
+          }
+    }
   }
 </script>
 

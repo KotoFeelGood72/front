@@ -4,44 +4,52 @@ export const sortCountry = [
     name: 'Код страны',
     orderby: 'code',
     settings: true,
+    visible: true
   },
   {
     name: 'Название страны',
     orderby: 'name',
     settings: true,
+    visible: true
   },
   {
     name: 'Видимость',
     orderby: 'active',
     settings: false,
+    visible: true
   },
 ];
 
 export const sortCities = [
   {
     name: 'Код страны',
-    orderby: 'code',
+    orderby: 'countryCode',
     settings: true,
+    visible: true
   },
   {
     name: 'Название страны',
-    orderby: 'code',
+    orderby: 'country',
     settings: true,
+    visible: true
   },
   {
     name: 'Название региона',
-    orderby: 'name',
+    orderby: 'region',
     settings: true,
+    visible: true
   },
   {
     name: 'Название города',
     orderby: 'name',
     settings: false,
+    visible: true
   },
   {
     name: 'Видимость',
     orderby: 'active',
     settings: false,
+    visible: true
   },
 ];
 
@@ -50,53 +58,63 @@ export const sortRegions = [
     name: 'Код страны',
     orderby: 'code',
     settings: true,
+    visible: true
   },
   {
     name: 'Название страны',
-    orderby: 'code',
+    orderby: 'countryCode',
     settings: true,
+    visible: true
   },
   {
     name: 'Название региона',
     orderby: 'name',
     settings: true,
+    visible: true
   },
   {
     name: 'Видимость',
     orderby: 'active',
     settings: false,
+    visible: true
   },
 ];
 
 export const sortKinder = [
   {
     name: 'Название',
-    orderby: 'code',
+    orderby: 'name',
     settings: true,
+    visible: true
   },
   {
     name: 'Город',
-    orderby: 'code',
+    orderby: 'city',
     settings: true,
+    visible: true
   },
   {
     name: 'Адрес',
-    orderby: 'name',
+    orderby: 'address',
     settings: true,
+    visible: true
   },
   {
     name: 'Заведующий',
-    orderby: 'name',
+    orderby: 'director',
     settings: true,
+    visible: true
   },
   {
     name: 'Менеджер',
-    orderby: 'name',
+    orderby: 'manager',
     settings: true,
+    visible: true
   },
   {
     name: 'Видимость',
     orderby: 'active',
     settings: false,
+    visible: true
   },
 ];

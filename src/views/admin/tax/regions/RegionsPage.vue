@@ -10,7 +10,7 @@
           <div class="flex items-center justify-start flex-1">
             <v-add-button class="mr-[20px]" link="/admin/regions/add" type="link"/>
             <v-delete-button class="mr-[20px]" @click.native="deleteSelectedItems" :class="{'bg-pink-600 pointer-events-auto': activeDeleteItem.length}"/>
-            <v-search/>
+            <v-search type="Regions"/>
           </div>
           <div class="module-group flex justify-end">
             <div class="settings-btn mr-[20px]" @click="openPopup">
@@ -49,7 +49,7 @@
         </div>
       </div>
     </div>
-    <v-filter />
+    <v-visible :visibleField="sortRegions"/>
   </section>
 </template>
 
@@ -64,7 +64,7 @@
       vDeleteButton: () => import('@/components/button/v-delete-button.vue'),
       vTitle: () => import('@/components/content/v-title.vue'),
       vSelect: () => import('@/components/shared/v-select.vue'),
-      vFilter: () => import('@/components/filter/v-filter.vue'),
+      vVisible: () => import('@/components/filter/v-visible.vue'),
       vBtnSettings: () => import('@/components/button/btn-settings.vue')
     },
     data() {
@@ -91,7 +91,7 @@
     },
     methods: {
       openPopup() {
-        this.$store.commit('openPopup', 'filter')
+        this.$store.commit('openPopup', 'visibles')
       },
       nextToDetail(item) {
         this.$store.commit('setRegionsDetail', item);
