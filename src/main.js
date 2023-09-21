@@ -10,14 +10,12 @@ import GlobalIcon from './components/shared/global-icon.vue';
 import notification from '@/plugins/vue-notification'
 import axios from '@/plugins/axios'
 
+
 Vue.component('GlobalIcon', GlobalIcon)
 Vue.component('VuePaginate', VuePaginate)
 
+// import middlewares from '@/plugins/middlewares'
 
-// const accessToken = localStorage.getItem('auth')
-// if (accessToken) {
-//   store.commit('SET_AUTH_TOKEN', accessToken)
-// }
 
 new Vue({
   router,

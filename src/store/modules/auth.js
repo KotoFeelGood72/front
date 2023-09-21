@@ -3,8 +3,8 @@ import router from '@/router'
 import setAuthHeader from '@/utils/auth-service'
 export default {
   state: {
-    authenticated: null,
-    token: localStorage.getItem('token') || '',
+    authenticated: false,
+    token: '',
     user: {
       id: null,
       email: '',
@@ -34,21 +34,11 @@ export default {
     async actionsAuth({ commit }, formData) {
       try {
         const { data } = await axios.post('login/', formData);
-        
         commit('SET_AUTH', data);
-        
         commit('SET_AUTH_TOKEN', data.data.accessToken);
-
-        localStorage.setItem('auth', data.status);
-
-        localStorage.setItem('id_token', data.data.accessToken);
-        const token = localStorage.getItem('id_token')
-
-        if(token) {
-          setAuthHeader(token)
-        }
-
+        setAuthHeader(data.data.accessToken)
     
+        localStorage.setItem('auth', data.status);
         router.push('/admin/').catch((err) => console.error(err));
       } catch (error) {
         console.log(error);
@@ -56,18 +46,15 @@ export default {
     },
     
     
-    async refreshTokens({ commit }) {
+    async refreshTokens({ commit, state }) {
       try {
-        const refreshAccessToken = localStorage.getItem('id_token')
         const { data } = await axios.post('/refresh-tokens', {
-          accessToken: refreshAccessToken,
+          accessToken: state.token,
         });
-  
-        if(refreshAccessToken) {
-          setAuthHeader(refreshAccessToken)
-        }
+    
+        setAuthHeader(data.data.accessToken)
         commit('SET_AUTH', data);
-        commit('SET_AUTH_TOKEN', refreshAccessToken);
+        commit('SET_AUTH_TOKEN', data.data.accessToken);
       } catch (error) {
         // Обработка ошибки обновления токена
         console.error(error);
@@ -82,7 +69,6 @@ export default {
       commit('SET_AUTH', false),
       commit('SET_AUTH_TOKEN', '');
       localStorage.removeItem('auth');
-      localStorage.removeItem('id_token');
       router.push('/login/').catch(err => console.error(err));
     }
   },

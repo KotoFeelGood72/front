@@ -13,6 +13,9 @@ import defaultRoutes from './default'
 
 import VDashboard from "@/views/admin/pages/v-dashboard.vue";
 
+
+// console.log(authMiddleware)
+
 // End import Pages //
 
 
@@ -27,7 +30,7 @@ const routes = [
   {
     path: '/admin/',
     component: VDashboard,
-    meta: { layout: 'admin-layout', auth: true }
+    meta: { layout: 'admin-layout' }
   },
 ];
 
@@ -43,20 +46,12 @@ function isAuthenticated() {
 }
 
 router.beforeEach((to, from, next) => {
-  const AccessToken = localStorage.getItem('id_token')
-
-  console.log(AccessToken, 'Текущий токен')
-  
   const requireAuth = to.matched.some(record => record.meta.auth)
-
-  console.log(requireAuth)
-
-  if (requireAuth && !isAuthenticated() && !AccessToken) {
-    next('/login')
+  if (requireAuth && !isAuthenticated()) {
+    next('/')
   } else {
     store.dispatch('refreshTokens')
-    next();
-    console.log(store.getters.getAccessToken, 'GETTERS')
+    next()
   }
 })
 
